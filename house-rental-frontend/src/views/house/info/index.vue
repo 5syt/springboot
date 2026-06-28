@@ -372,8 +372,21 @@ export default {
       this.$refs.houseForm.validate(function(valid) {
         if (valid) {
           self.submitLoading = true
+          const submitData = Object.assign({}, self.houseForm)
+          if (submitData.area === '' || submitData.area === null) {
+            submitData.area = 0
+          }
+          if (submitData.rentPrice === '' || submitData.rentPrice === null) {
+            submitData.rentPrice = 0
+          }
+          if (submitData.deposit === '' || submitData.deposit === null) {
+            submitData.deposit = null
+          }
+          if (submitData.typeId === '' || submitData.typeId === null) {
+            submitData.typeId = null
+          }
           const api = self.isEdit ? updateHouse : addHouse
-          api(self.houseForm).then(function() {
+          api(submitData).then(function() {
             self.$message.success(self.isEdit ? '编辑成功' : '新增成功')
             self.dialogVisible = false
             self.fetchList()

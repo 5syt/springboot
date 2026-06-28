@@ -368,11 +368,21 @@ export default {
         const valid = await this.$refs.orderForm.validate()
         if (valid) {
           this.submitLoading = true
+          const submitData = Object.assign({}, this.orderForm)
+          if (submitData.monthRent === '' || submitData.monthRent === null) {
+            submitData.monthRent = 0
+          }
+          if (submitData.deposit === '' || submitData.deposit === null) {
+            submitData.deposit = 0
+          }
+          if (submitData.houseId === '' || submitData.houseId === null) {
+            submitData.houseId = null
+          }
           if (this.isEdit) {
-            await updateOrder(this.orderForm)
+            await updateOrder(submitData)
             this.$message.success('编辑成功')
           } else {
-            await addOrder(this.orderForm)
+            await addOrder(submitData)
             this.$message.success('新增成功')
           }
           this.dialogVisible = false
