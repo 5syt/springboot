@@ -1,0 +1,1289 @@
+﻿
+
+
+
+《软件框架技术》课程设计报告
+
+
+
+
+
+
+
+
+
+
+
+提交日期： 2026  年 6 月
+目  录
+1 绪论	1
+1.1 项目背景和意义	1
+1.2 项目的目标和范围	1
+1.3 本文结构简介	2
+2 相关原理和技术	3
+2.1 IntelliJ IDEA开发工具	3
+2.2 Maven	3
+2.3 Spring Boot	3
+2.4 Thymeleaf	4
+2.5 MySQL数据库介绍	4
+2.6 B/S体系结构	5
+3 系统分析	6
+3.1 功能需求分析	6
+3.1.1系统前台功能	6
+3.1.2系统后台功能	6
+3.2 角色用例分析	7
+3.3 系统数据流分析	8
+3.4 可行性分析	9
+3.4.1 技术可行性	9
+3.4.2 社会可行性	10
+3.4.3 操作可行性	10
+4 系统总体设计	11
+4.1 系统功能结构	11
+4.2 系统业务流程	12
+4.3 数据库设计	13
+4.3.1概念模型设计	13
+4.3.2物理结构设计	13
+5 系统详细设计与实现	16
+5.1主要页面框架设计	16
+5.2前台功能的设计与实现	16
+5.2.1 首页页面设计	16
+5.2.2 分类页面设计	19
+5.2.3 标签页面设计	20
+5.2.4 归档页面设计	21
+5.2.5 关于我页面设计	23
+5.2.6 课程详情页面设计	24
+5.2.7 搜索页面设计	27
+5.3 后台功能的设计与实现	28
+5.3.1 后台登录页面设计	28
+5.3.2 后台管理主页面设计	29
+5.3.3 课程管理页面设计	30
+5.3.4 新增课程模块	31
+5.3.5 分类管理模块	33
+5.3.6 新增分类页面	34
+5.3.7 标签页面管理模块	36
+5.3.8 新增标签设计	37
+6 系统测试	39
+6.1 测试环境和条件	39
+6.2 测试目的	39
+6.3 测试方法	39
+6.4 测试用例	39
+6.4.1 前台测试用例与结果	39
+6.4.2 后台测试用例与结果	40
+6.5 测试结论	42
+7 总结和展望	43
+参考文献	44
+附录	45
+
+
+1 绪论
+1.1 项目背景和意义
+随着近两年新冠疫情的影响，线上教育也得到了极大的推广，教学资源得到了充分利用，线上学习能够让学生不再受时间与地点的影响，不管在什么时候什么地方，只需要有网络和手机或者电脑就能开始学习。在科学信息技术快速发展的今天，大家的学习方式也在不断的更新迭代，而blog和vlog的学习方式在不断被更多人接受和使用，blog和vlog正在或者说已经在影响和改变着我们的日常生活，它使交流和学习更加有方向性和选择性。而目前来说，大家对在线学习系统有需求，但还是有在线学习注意力容易分散的问题存在，对注意力集中依旧对大家来说是一个难题。注意力分散的原因有一：传统的在线学习系统过于死板，完成了学习任务得不到交流，就好像为了学习而学习，缺乏一种吸引力和交互性。而一个好的blog能够表达博主的情感，智慧，学习技巧和方法，更多的是融入了个人特色的态度，学习的过程中会更具有感染力，相对于传统型的学习系统，会更加的有趣和具备吸引力[3] 。目前在全球来看，疫情形势依旧十分严峻，因此线上学习依然是一种必要的教学模式，也将越来越流行，而基于blog类型的便捷式的系统也会更受欢迎，也能够继续帮助学生和已经脱离学校的社会人士进行学习和交流，能充分的利用互联网学习资源。
+1.2 项目的目标和范围
+本项目基于个人博客类的在线学习系统，不只是学生还有很多社会人士如果对新六艺感兴趣的都可以参与式学习和系统式的交流，能够挑选个人擅长和喜欢的内容开始学习，它相较于其他社交系统具有操作简单、界面美观、交流自由，低延时等优点，适合广大群体。个人博客式的学习系统更像是一个人的知识传播和个人阅历、经历、看法的分享，设计本系统，就是为了表达作者的学习态度和作者的学习方法，分享学习资源，注重的是交流式的学习[2] 。
+ 
+1.3 本文结构简介
+本文的重点内容是新六艺在线学习系统的设计与实现。具体内容划分为7章。
+第1章 绪论：对系统设计与实现的背景进行深究，分析。对意义进行描述，对全文结构进行阐述。
+第2章 相关技术和原理：阐述系统开发使用到的工具和关键技术，本项目在设计过程与其他开发架构相比较采用了基于B/S的体系结构，Spring Boot框架和Thymeleaf前端框架进行的本次项目的开发与设计。
+第3章 系统分析：对项目进行功能性的需求研究以及非功能性的需求研究，在此基础上对需求进行分析抽象。目标系统的数据输入和输出通过数据流图进行描述、还要设计目标系统的逻辑模型，从不同的模型，从各个角度，各个侧重点阐述目标系统。最后进行系统可行性分析。
+第4章 系统的概要设计：以业务的流程还有功能需求为基础进行设计和开发，对各个模块的功能进行详细说明，数据的输入和输出以及重要的处理逻辑关系，结合E-R图描述数据库的逻辑设计。
+第5章 系统的详细设计与实现：分析需求研究得出的结论和结过，设计出总体满足用户功能需求和业务需求的系统，本章节重点介绍系统界面，具体的技术实现方式。
+第6章 系统测试与应用：描述系统所处的测试环境以及阐述为什么进行测试，测试的意义还有方法，其次要对测试用例进行设计，而且需要执行全部的用例，最后对测试结果和产生bug原因进行研究和总结。
+第7章 总结和展望：通过这次的研究得到的成果，总结不足之处和下一次开展的期望。
+2 相关原理和技术
+2.1 IntelliJ IDEA开发工具
+IDEA是 Java 语言的集成开发环境，由Java语言编写。俗话话“工欲善其事，必先利其器”，IDEA提供了很多人性化的功能，譬如写代码的智能助手、在写代码时会自动提示语法、重构、J2EE支持、Ant、JUnit、CVS 整合、代码审查等，拥有着较完善的插件生态，IntelliJ 在这个计算机行业中被使用者评价为是最好用的 java 开发工具其中之一。它极大地提升我们的开发效率。当然任何的工具都有优点和缺点，譬如IDEA的插件开发相对比较匮乏，就目前官方公布的数据展示，它的插件仅仅只有400个左右。再者在消耗资源方面来说，当创建一个中型以上的J2EE项目，运行后几乎都要200M之上的硬盘内存支撑，加上安装软件七七八八都要500M的硬盘内存空间基础，所以IDEA在消耗资源方面是较大的。
+2.2 Maven
+maven简单来说就是项目的管理工具，包含项目管理，插件以及目标的逻辑等。maven为我们提供了一系列的执行流程，总的来说Maven 是整合了所有的 Jar 包，采用maven进行项目管理的好处：首先可以对jar包的进行一致管理，使得空间能够节省，再也不用自己找jar包下载了；项目一键构建，方便维护和发布；可以跨系统，运用于大型项目提高效率。 
+2.3 Spring Boot
+Pivotal团队开发了一个全新的框架就是Spring Boot，开发Spring Boot的主要原因就是让它来简单化应用，就是让使用Spring的首次搭建和开发的流程简洁化。这个框架的配置型式很独特，这就使得开发工作人员不需要再自定义样板化的配置了。应用Spring Boot框架具备如下的几个优点：
+（1） 能使编写代码变得更容易了，Spring Boot配置方式是采用了JavaConfig，并且给予了大量的代码注释，在一定的水平上上提高了大家的工作效率。
+（2）能够使配置变得容易，Spring Boot给予很多默认的配置，同样也提供自定义配置，但是全部的Spring Boot项目都仅有一个配置文件。
+ （3）能够使部署变得容易，Spring Boot里面具有三种Servlet容器，Tomcat，Jetty以及undertow，当运行Spring Boot的项目时，只要具备Java的配置环境就能运行。内置的Tomcat容器，使得项目不用部署成war文件，直接打成一个jar包运行即可。
+2.4 Thymeleaf
+Thymeleaf是服务器端的一个Java模板引擎，应用于Web和独立环境，可以处理HTML，XML，JavaScript，CSS甚至是纯文本的文件。Thymeleaf的目标是提供一种独特的方法，是用来模板创建的。为达到这个目的，以自然模板的思想作为根基，Thymeleaf模板文件具备自然模板的概念。这帮助解决设计沟通问题，减少了设计人员和开发团队之间的距离。
+2.5 MySQL数据库介绍
+当提起关系类型的数据库管理系统，相信大家一定能想得到MySQL，MySQL能把数据存放在不一样的表中，所以它的灵活性特别强，速度快，并且成本低，能跨系统，高性能，上手快，使用Navicat工具对本次系统的数据库进行统一打理，采用MySQL数据库是因为它的具有的优点和独特之处，理由如下：
+（1）MySQL性能方面表现优越、服务的稳定性高，几乎不会出现反常宕机。
+（2）MySQL是一个开放源代码而且没有版权限制，自主性还有应用的成本都相对较低，它储存的数据十分的多，因此在用户检索和访问的时候更加的方便了。
+（3）MySQL历史悠久，用户活跃度高，黏性强，遇到问题可以在网络上能查找很多技术文献，技术论坛，能及时的寻求到帮助。
+（4）MySQL体积小，安装简单，方便维护。
+（5）通过C和C++开发语言编程的MySQL、支持多个操作系统、支持多线程、为多种编程语言提供API、优化SQL算法加快了查询的速度。 
+2.6 B/S体系结构
+目前主流的系统体系结构有B/S结构和C/S结构，本系统采用的是如图2-1所示的B/S体系结构，B/S结构是Brower和Service架构的模式，仅仅只用在客户端上装置一个浏览器，服务端装置一种数据库，就能够经过Web Service达到浏览器和数据库里的数据互动。
+浏览器端：用户平时用的浏览器，经过浏览器对服务器端发出一个或多个请求，而且对服务器端反馈的内容开始处理，展现，利用界面能让系统的逻辑关系功能比较好的表达逻辑。服务器端：给予对数据的服务以及数据的操作，并且反馈将内容发送给中间层，接着结果表现在系统的界面上。中间层：位置是在浏览器端和服务器端的中间部分。最重要的任务就是表达系统的逻辑关系，完成实际的功能需求，并且接受客户的请求然后将这些请求发送到服务端，然后把服务端的结果又发送回客户中，浏览器端和服务器端要交互的信息是必须要通过中间层来实现的。
+
+图2-1 B/S体系结构
+
+3 系统分析
+3.1 功能需求分析
+3.1.1系统前台功能
+新六艺在线学习系统的前台功能主要有首页课程展示模块，课程查询模块、课程评论模块、归档模块和“关于我”页面模块。详细功能描述如下：
+（1）课程详情展示模块：点进首页有推荐课程的简略展示，包括课程的简要介绍，作者，热度，发布时间，以及文章的首图；右边是按照分类，标签，以及最新推荐的子页面，点击能够进入子页面，查看课程。
+（2）内容查询模块：课程内容可以按照大类即按分类进行模糊查询课程资源，也可以分小类即按标签进行模糊查询课程资源。也可以在头部导航栏中按照标题关键字进行全局查找。
+（3）课程评论模块：评论模块需要进入到课程的详情里才能进行评论，输入id和邮箱才能评论，作者可以在后台回复评论，如果管理员登录的情况下评论会出现“博主”标识。
+（4）归档模块：统计当前的课程有多少篇，并且按照时间顺序展示文章。
+（5）关于我模块：有对新六艺在线学习系统的简略介绍，以及作者的个人信息介绍。
+3.1.2系统后台功能
+因为新六艺学习系统是基于个人课程类的学习系统，因此访客不需要登录便能进行访问，因此后台有一个管理员的角色，管理员不用注册，只需在数据库中建立，后台管理主要分为课程修改，删除以及新增，标签的修改，删除以及新增，分类的删除，修改以及新增，和用户的登录和注销模块[5] 。
+详细的功能描述如下：
+（1）用户管理模块：该模块是对管理员这个角色进行的操作，当管理员不想继续管理系统时可以注销账号，平时进入系统时需要先登录账号，访客直接访问就可以，不用再登录，注销功能需要管理员登录后台后才能进行。
+（2）课程资源管理模块：课程管理模块包括新增课程、编辑课程、删除课程，发布课程，可以根据标题，标签模糊查询课程等功能。
+（3）分类管理模块：分类的基本操作是删除、新增，修改的功能。
+（4）标签管理模块：标签的基本操作是删除、新增，修改的功能。
+3.2 角色用例分析
+新六艺学习系统一共有两个角色，分别是访客和管理员，访客无需登录，进入系统便可访问，下面分别对系统和管理员进行业务用例分析。
+如图3-1所示，访客是可以直接访问系统，无需注册登录，在系统中，访客可以查看课程内容，可以按照分类，标签，时间线等模糊查询课程，也可以在作者发表的课程下进行评论，和作者沟通交流，可以在关于我的页面中找到作者，联系作者。
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+图3-1 访客用例图
+如图3-2所示，管理员只有在后台系统输入的账号和密码都正确的情况下，才可以进入后台主页，如果不需要使用账号的话，可以在后台注销，同时在后台可以进行课程的增删改查，分类管理的增删改查，标签管理增删改查。
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+图3-2 管理员用例图
+3.3 系统数据流分析
+数据流图通常被称为DFD图，主要作用是对本次系统的逻辑模型进行描述，是一种图示工具，因此，用图示的方法能够清晰的描述系统中数据的流动情况和加工的过程。
+（1）经过分析系统的外部实体是访客和管理员，外部实体需要和系统进行数据交互，因此顶层数据流图如图3-3所示：
+
+
+
+
+图3-3 顶层数据流图
+（2）以顶层数据流图基础，得出目标系统和实体间的数据流情况，把处理的过程看做是一个加工的过程，先申请加工，加工完了就返回，因此得出第一层数据流图如图3-4所示：
+图3-4 第一层数据流图
+（3）再对管理员的管理信息的数据流程继续的细化一下，因此能够得到目标系统的第二层数据流图，如图3-5所示：
+
+
+
+
+
+
+
+
+
+
+
+
+
+图3-5 第二层数据流图
+3.4 可行性分析
+3.4.1 技术可行性
+新六艺学习在线系统采用了目前十分受欢迎的Maven、Spring Boot、Thymeleaf与JPA框架开发Web的底层服务。数据库选择体积小的MySQL，他的操作简单，并且功能非常多，同时密码采用MD5加密算法进行加密处理，提高了管理员账号的安全性。在设计开发的过程中，采取了git的版本控制工具，能分阶段的对项目进行管理，当代码编写错误，导致出错时，我们可以对项目进行回滚抢救，回滚到上一个版本中，提高了效率。现在，计算机的软件和硬件都快速的发展，对服务器的可靠性和稳定性的要求和期待在逐步的提高，为了能够满足项目开发所要求的硬件需求，因此服务器使用百度云BCC服务器Linux Ubuntu 18.04 LTS，在运维的过程中同步进行数据库定期的自动化备份和服务器镜像的快照管理，如果有数据库数据丢失，偶然故障，或者恶意故障的现象，能够及时对系统进行可恢复的抢救。
+3.4.2 社会可行性
+在当今瞬息万变的信息技术和互联网世界中，每个人都只需要一个浏览器即可访问和查看不同的系统。它给人民提供了便利，创造了良好的学习环境，并为人们提供了更有效的学习方法。一个好的工具能够让人民提高工作效率，而一个易于使用的学习型博客系统更是可以提高学习效率，正所谓活到老学到老，在各行各业中大家也开始“卷”起来了，拼技术拼自律，现在大家对学习系统的需求会越来越大，而学习型的博客系统更是可以代表博主的学习态度和固定的一个领域，一个运营好的系统，内容除了内容需要满足人们的基本需求，同样，操作也要满足人们的需求，并且界面是简洁的，易于使用的，我相信在之后的在社会生活中，学习型的系统将会越来越受大家欢迎。
+3.4.3 操作可行性
+用户只要通过浏览器不管是移动端还是PC端，输入网址就可以进入系统开始学习，系统界面简洁，友好，操作难度很低，只要会使用电脑手机的用户，都能使用该系统，不管是小学生还是老年人，只要会上网，会使用手机，认识字，便能使用该系统。操作难度很低，适用广大人群。
+4 系统总体设计
+4.1 系统功能结构 
+功能模块图表示目标系统应该要实现的各类功能，并将它们分类，总结。之后的设计与实现需要根据功能模块图来实现这些具体功能[5] 。经分析系统前台功能模块如图4-1所示： 
+图4-1 系统前台功能结构图
+系统后台功能模块如图4-2所示：
+
+ 
+
+
+ 
+ 
+
+
+
+图4-2 系统后台功能结构图
+4.2 系统业务流程
+经分析系统的前台业务流程如图4-3所示：
+
+
+
+
+
+
+
+
+
+图4-3 系统前台业务流程图
+后台登录的业务流程如图4-4所示：
+
+
+
+
+
+
+
+
+
+
+
+
+
+图4-4 系统后台业务流程图
+
+4.3 数据库设计
+4.3.1概念模型设计
+经过分析本系统的实体E-R图，如图4-5所示：
+
+图4-5 系统E-R模型图
+4.3.2物理结构设计
+根据实体E-R的逻辑关系，设计本系统的物理结构关系表。系统的数据库名为：blog，一共设计了6个表，分别为t_blog，t_blog_tags，t_comment，t_tag，t_type，t_user。其数据表结果如下：
+（1）管理员信息表（t_user）
+管理员信息表的id字段为主键，这个字段是自主递增的，不是空值，是int型。该表结构如表4-1所示。
+表4-1管理员信息表（t_user）
+列名
+数据类型
+字段长度
+是否为空
+备注
+id
+bigint(20)
+　
+NO
+管理员编号
+avatar
+varchar(255)
+255
+YES
+管理员头像
+create_time
+datetime
+　
+YES
+账号创建时间
+email
+varchar(255)
+255
+YES
+管理员邮箱
+列名
+数据类型
+字段长度
+是否为空
+备注（续表4-1）
+nickname
+varchar(255)
+255
+YES
+管理员昵称
+password
+varchar(255)
+255
+YES
+管理员密码
+type
+int(11)
+　
+YES
+用户类型
+update_time
+datetime
+　
+YES
+账号更新时间
+username
+varchar(255)
+255
+YES
+管理员用户名
+ 
+（2）课程信息表（t_blog）
+课程信息表的id字段为主键，这个字段是自主递增的，不是空值，是int型。该表结构如表4-2所示。
+表4-2课程信息表（t_blog）
+列名
+数据类型
+长度
+是否为null
+注释
+id
+bigint(20)
+　
+NO
+课程编号
+appreciation
+bit(1)
+　
+NO
+课程赞赏
+commentabled
+bit(1)
+　
+NO
+能否可以评论
+content
+longtext
+4294967295
+YES
+课程内容
+create_time
+datetime
+　
+YES
+课程创建时间
+description
+varchar(255)
+255
+YES
+课程简述
+first_picture
+varchar(255)
+255
+YES
+课程首图地址
+flag
+varchar(255)
+255
+YES
+课程标识
+published
+bit(1)
+　
+NO
+是否发布
+recommend
+bit(1)
+　
+NO
+课程推荐
+share_statement
+bit(1)
+　
+NO
+转载声明
+title
+varchar(255)
+255
+YES
+课程标题
+update_time
+datetime
+　
+YES
+课程更新时间
+views
+int(11)
+　
+YES
+浏览量（热度）
+type_id
+bigint(20)
+　
+YES
+分类编号
+user_id
+bigint(20)
+　
+YES
+用户编号
+（3）课程标签信息表（t_blog_tags）
+课程标签信息表的blogs_id字段是这个表的主键，这个字段是自主递增的，不是空值，是int型。该表结构如表4-3所示。
+            表4-3课程标签信息表（t_blog_tags）
+列名
+数据类型
+长度
+是否为null
+备注
+blogs_id
+bigint(20)
+
+NO
+课程编号
+tags_id
+bigint(20)
+
+NO
+标签编号
+（4）课程分类信息表（t_type）
+课程分类信息表，该表的id字段示主键，这个字段是自主递增的，不是空值，是int型。该表结构如表4-4所示。
+
+表4-4课程分类信息表（t_type）
+列名
+数据类型
+长度
+是否为null
+注释
+id
+bigint(20)
+　
+NO
+分类编号
+name
+varchar(255)
+255
+YES
+分类名称
+（5） 标签表（t_tag）
+标签信息表的id字段是主键，这个字段是自主递增的，不是空值，是int型。该表结构如表4-5所示。
+ 表4-5标签表（t_tag）
+列名
+数据类型
+长度
+是否为null
+注释
+id
+bigint(20)
+　
+NO
+标签编号
+name
+varchar(255)
+255
+YES
+标签名称
+（6）评论表（t_comment）
+评论表的id字段是主键，这个值是自主递增的，不是空值，是int型。该表结构如表4-6所示。
+ 表4-6评论表（t_tag）
+列名
+数据类型
+长度
+是否为null
+注释
+id
+bigint(20)
+　
+NO
+评论编号
+admin_comment
+bit(1)
+　
+NO
+是否是管理员评论
+avatar
+varchar(255)
+255
+YES
+头像
+content
+varchar(255)
+255
+YES
+评论内容
+create_time
+datetime
+　
+YES
+创建时间
+email
+varchar(255)
+255
+YES
+邮箱
+nickname
+varchar(255)
+255
+YES
+昵称
+blog_id
+bigint(20)
+　
+YES
+课程编号
+parent_comment_id
+bigint(20)
+　
+YES
+父评论编号
+
+ 
+5 系统详细设计与实现 
+5.1主要页面框架设计 
+文本、图表、颜色是资讯系统内容的重要部分，是资讯传送信息的必要手段，因此，新六艺学习系统整体风格采用黑白灰色调，简约又不失大方的配色，给人一种简洁干练的感觉，就像是新六艺的浓浓的文化的气息。这个系统的配色，图标，背景都结合文化古韵，能够让访客一眼就能看出主题。此次设计的界面使用WebStorm软件设计的，基于CSS3、Semantic-UI设计，界面简洁干净，方便阅读，浏览的设计理念构建出本次系统的美观，可读性强，交互性强的网页。
+5.2前台功能的设计与实现
+5.2.1 首页页面设计
+首页，就是全网站内容的目录，根据首页能够指引到访客想要访问的内容，是一个索引，因此，一个简洁明了，主题鲜明的首页能给访客留下深刻印象，因此，将新六艺学习系统的首页分成三部分，分别为头部，中部，尾部，设计图如图5-1所示。
+头部有系统的logo和系统的名称，以及导航栏，搜索栏。
+中部分为两个小模块，左边是新六艺课程的展示，包括标题，展示图片和简要介绍等内容，右边是分类列表，标签列表，最新推荐列表和扫码关注我的二维码图片的展示。
+尾部分为四列，分别为二维码图标展示、最新课程、个人信息联系、和个人的介绍，最下面就是系统开发的相关信息，时间和开发者id。
+ 
+
+图5-1 系统前台首页面
+关键代码如下：
+@Override
+public List<Blog> listRecommendBlogTop(Integer size) {//最新推荐方法
+
+    Sort sort = new Sort(Sort.Direction.DESC,"updateTime");
+    Pageable pageable = new PageRequest(0, size, sort);
+    return blogRepository.findTop(pageable);
+}
+@Override
+public Page<Blog> listBlog(Pageable pageable, BlogQuery blog) {
+    return blogRepository.findAll(new Specification<Blog>() {
+    //findAll方法来查询博客数据   
+ @Override
+        public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+            List<Predicate> predicates = new ArrayList<>();
+            if (!"".equals(blog.getTitle()) && blog.getTitle() != null) {
+ predicates.add(cb.like(root.<String>get("title"), "%"+blog.getTitle()+"%"));
+            }
+            if (blog.getTypeId() != null) {
+                predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
+            }
+            if (blog.isRecommend()) {
+                predicates.add(cb.equal(root.<Boolean>get("recommend"), blog.isRecommend())); }
+            cq.where(predicates.toArray(new Predicate[predicates.size()]));
+            return null;  }
+    },pageable);
+}
+5.2.2 分类页面设计
+分类页面从上至下分为四个部分，设计图如图5-2所示。
+第一部分是系统的logo和系统的名称，以及导航栏，搜索栏；第二部分分类列表的展示，展示出目前拥有的分类；第三部分是课程的展示，包括标题，展示图片和简要介绍等内容；第四部分分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，开发时间和开发者id。
+
+图5-2 课程分类展示
+关键代码如下：
+@Controller
+public class TypeShowController {
+    @Autowired
+    private TypeService typeService;
+    @Autowired
+    private BlogService blogService;
+    @GetMapping("/types/{id}")
+    public String types(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+ @PathVariable Long id, Model model) {
+        List<Type> types = typeService.listTypeTop(10000);
+        if (id == -1) { id = types.get(0).getId(); }
+        BlogQuery blogQuery = new BlogQuery();
+        blogQuery.setTypeId(id);
+        model.addAttribute("types", types);
+        model.addAttribute("page", blogService.listBlog(pageable, blogQuery));
+        model.addAttribute("activeTypeId", id);
+        return "types";
+    }}
+5.2.3 标签页面设计
+标签页面从上至下分为四个部分，设计图如图5-3所示。
+第一部分是系统的logo和系统的名称，以及导航栏，搜索栏；第二部分标签列表的展示，展示出目前拥有的分类；第三部分是课程的展示，包括标题，展示图片和简要介绍等内容；第四部分分为四列，分别为二维码图标展示、最新课程、个人信息联系、和个人的介绍，最下面就是系统开发的相关信息，开发时间和开发者id。
+
+图5-3 标签页面展示
+关键代码如下：
+public class TagShowController {
+    @Autowired
+    private TagService tagService;
+    @Autowired
+    private BlogService blogService;
+    @GetMapping("/tags/{id}")
+    public String tags(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+    @PathVariable Long id, Model model) {
+        List<Tag> tags = tagService.listTagTop(10000);
+        if (id == -1) {
+           id = tags.get(0).getId();
+        }
+        model.addAttribute("tags", tags);
+        model.addAttribute("page", blogService.listBlog(id,pageable));
+        model.addAttribute("activeTagId", id);
+        return "tags";
+    }
+}
+5.2.4 归档页面设计
+归档页面是根据时间来显示课程。从上至下分为三个部分，头部，中部，尾部，设计图如图5-4所示。
+头部有系统的logo和系统的名称，以及导航栏，搜索栏。
+中部分根据时间线显示课程的标题。
+尾部分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，时间和开发者id。
+
+
+
+
+
+
+
+
+
+
+图5-4 归档页面展示
+关键代码如下： 
+@Controller
+public class ArchiveShowController {
+    @Autowired
+    private BlogService blogService;
+    @GetMapping("/archives")
+    public String archives(Model model) {  
+//调用 blogService对象的countBlog，MAP方法
+        model.addAttribute("archiveMap", blogService.archiveBlog());
+        model.addAttribute("blogCount", blogService.countBlog());
+        return "archives"; }}
+public Map<String, List<Blog>> archiveBlog() {
+    List<String> years = blogRepository.findGroupYear();
+    Map<String, List<Blog>> map = new HashMap<>();
+    for (String year : years) {map.put(year, blogRepository.findByYear(year)); }
+    return map;
+@Override
+public Long countBlog() {
+    return blogRepository.count();
+}
+5.2.5 关于我页面设计
+关于我页面模块设计
+关于我页面从上至下分为三个部分，头部，中部，尾部，中部分为两个列表，设计图如图5-5所示。
+头部有系统的logo和系统的名称，以及导航栏，搜索栏。
+  中部分为两个列表，左边列表是开发者的个人头像展示，右边列表是关于我的个人介绍，个人签名和兴趣爱好，联系方式，以及开发系统的初衷。尾部分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，时间和开发者id。
+
+
+
+
+
+
+
+
+
+
+
+
+图5-5 关于我页面展示
+关键代码如下： 
+@Controller
+public class AboutShowController {
+    @GetMapping("/about")
+    public String about() {
+        return "about";
+    }}
+5.2.6 课程详情页面设计
+ 课程详细页是对课程的详细内容的展示，内容包括文字，图片和视频。从上至下分为三个部分，头，中，尾部，设计图如图5-6所示。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+图5-6 课程详情页面展示
+头部有系统的logo和系统的名称，以及导航栏，搜索栏。中部分划分四个列表，从上至下分别为，标题，内容，赞赏，评论。尾部分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，时间和开发者id。
+关键代码如下： 
+@Service
+public class CommentServiceImpl implements CommentService {
+    @Autowired
+    private CommentRepository commentRepository;
+    @Override
+    public List<Comment> listCommentByBlogId(Long blogId) {
+        Sort sort = new Sort("createTime");
+        List<Comment> comments = commentRepository.findByBlogIdAndParentCommentNull(blogId,sort);
+        return eachComment(comments);
+    }
+    @Transactional
+    @Override
+    public Comment saveComment(Comment comment) {
+        Long parentCommentId = comment.getParentComment().getId();
+        if (parentCommentId != -1) {
+  comment.setParentComment(commentRepository.findOne(parentCommentId));
+        } else {
+            comment.setParentComment(null);
+        }
+        comment.setCreateTime(new Date());
+        return commentRepository.save(comment);
+    }
+    /**
+     * 循环每个顶级的评论节点
+     * @param comments
+     * @return
+     */
+    private List<Comment> eachComment(List<Comment> comments) {
+        List<Comment> commentsView = new ArrayList<>();
+        for (Comment comment : comments) {
+            Comment c = new Comment();
+            BeanUtils.copyProperties(comment,c);
+            commentsView.add(c);
+        }
+        //合并评论的各层子代到第一级子代集合中
+        combineChildren(commentsView);
+        return commentsView;
+    }
+    /**
+     *
+     * @param comments root根节点，blog不为空的对象集合
+     * @return
+     */
+    private void combineChildren(List<Comment> comments) {
+        for (Comment comment : comments) {
+            List<Comment> replys1 = comment.getReplyComments();
+            for(Comment reply1 : replys1) {
+                //循环迭代，找出子代，存放在tempReplys中
+                recursively(reply1);
+            }
+            //修改顶级节点的reply集合为迭代处理后的集合
+            comment.setReplyComments(tempReplys);
+            //清除临时存放区
+            tempReplys = new ArrayList<>();
+        }
+    }
+    //存放迭代找出的所有子代的集合
+    private List<Comment> tempReplys = new ArrayList<>();
+    /**
+     * 递归迭代，剥洋葱
+     * @param comment 被迭代的对象
+     * @return
+     */
+    private void recursively(Comment comment) {
+        tempReplys.add(comment);//顶节点添加到临时存放集合
+        if (comment.getReplyComments().size()>0) {
+            List<Comment> replys = comment.getReplyComments();
+            for (Comment reply : replys) {
+                tempReplys.add(reply);
+                if (reply.getReplyComments().size()>0) {
+                    recursively(reply); } }}
+    }
+}
+5.2.7 搜索页面设计
+搜素结果页面从上至下分为四个部分，设计图如图5-7所示。
+第一部分是系统的logo和系统的名称，以及导航栏，搜索栏；第二部分是显示搜索结果的个数反馈；第三部分是搜索出来的课程的展示，包括标题，展示图片和简要介绍等内容；第四部分分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，开发时间和开发者id。
+
+图5-7 搜索页面设计
+关键代码如下：
+@PostMapping("/search")
+public String search(@PageableDefault(size = 8, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+                     @RequestParam String query, Model model) {
+    model.addAttribute("page", blogService.listBlog("%"+query+"%", pageable));
+    model.addAttribute("query", query);
+    return "search";
+}
+ 5.3 后台功能的设计与实现
+5.3.1 后台登录页面设计
+后台的登录界面是管理员进行对系统管理的入口，输入正确的账号密码便可进入系统，这个界面的设计风格统一，简洁和美观，设计图如图5-8所示。
+
+图5-8 后台登录页面展示
+关键代码如下：
+@PostMapping("/login")//登录
+public String login(@RequestParam String username,
+                    @RequestParam String password,HttpSession session,
+                    RedirectAttributes attributes) {
+    User user = userService.checkUser(username, password);
+    if (user != null) {
+        user.setPassword(null);
+        session.setAttribute("user",user);
+        return "admin/index";//密码和服务器的一致就进入后台主页
+    } else {  attributes.addFlashAttribute("message", "用户名和密码错误");
+        System.out.println("1111");
+        return "redirect:/admin";
+    }}
+@GetMapping("/logout")//账号注销
+public String logout(HttpSession session) {
+    session.removeAttribute("user");
+    return "redirect:/admin";
+}
+5.3.2 后台管理主页面设计
+输入准确的账号和密码后经过验证，会进入后台管理系统的主页面，该页面是一个欢迎页面，提示管理员已经正常登录，可进行下一步的操作。同样分为三个部分，头，中，尾，与前台的主页面不同的是，头部的导航栏中有三个菜单，分别为，课程，分类，标签，还有账号的管理图标，设计图如图5-9所示。
+
+图5-9 后台管理主页面展示
+关键代码如下：
+<div class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+        <div class="ui success large message">
+            <h3>Hi,</h3>
+            <p>totoro，欢迎登录新六艺学习系统!</p>
+        </div></div></div>
+5.3.3 课程管理页面设计
+课程管理页面从上至下分为四个部分，设计图如图5-10所示。
+第一部分是系统的名称，以及导航栏菜单，和长号管理图标；第二部分是搜索栏，可根据标题，分类进行搜索；第三部分是课程列表，显示课程的标题，类型，状态，是否推荐，更新时间，以及操作，能够进行课程的修改和删除；第四部分分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，开发时间和开发者id。
+
+图5-10 课程管理页面展示
+ 关键代码如下：
+@GetMapping("/blogs/{id}/input")//
+public String editInput(@PathVariable Long id, Model model) {
+    setTypeAndTag(model);
+    Blog blog = blogService.getBlog(id);
+    blog.init();
+    model.addAttribute("blog",blog);
+    return INPUT;
+}
+@GetMapping("/blogs/{id}/delete")
+public String delete(@PathVariable Long id,RedirectAttributes attributes) {
+    blogService.deleteBlog(id);
+    attributes.addFlashAttribute("message", "删除成功");//删除课程
+    return REDIRECT_LIST;
+}
+5.3.4 新增课程模块
+新增课程页面从上至下分为三个部分，分别为头部，中部，尾部，设计图如图5-11所示。
+头部是系统的名称，以及导航栏菜单，和账号管理图标。
+中部分为7行，主要是课程的详细信息填写，第一行是是标题栏，输入课程标题，可以选择原创和转载；第二行是是课程内容编辑，采用Markdowm文本编辑器；
+第三行是选择分类，和标签的选择，接下来就是首图的地址和课程的简要描述，最下面是保存，发布，返回按钮；
+尾部分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，开发时间和开发者id。
+
+图5-11 新增课程页面展示
+关键代码如下：
+@PostMapping("/blogs")
+public String post(Blog blog, RedirectAttributes attributes, HttpSession session) {
+    blog.setUser((User) session.getAttribute("user"));
+    blog.setType(typeService.getType(blog.getType().getId()));
+    blog.setTags(tagService.listTag(blog.getTagIds()));
+    Blog b;
+    if (blog.getId() == null) {
+        b =  blogService.saveBlog(blog);
+    } else {
+        b = blogService.updateBlog(blog.getId(), blog);
+    }
+    if (b == null ) {
+        attributes.addFlashAttribute("message", "操作失败");
+    } else {
+        attributes.addFlashAttribute("message", "操作成功");
+    }
+    return REDIRECT_LIST;
+}
+5.3.5 分类管理模块
+分类课程页面从上至下分为三个部分，分别为头部，中部，尾部，设计图如图5-12所示。
+头部是系统的名称，以及导航栏菜单，和账号管理图标。
+中部是分类列表展示，包括序号，名称和操作，可以编辑和删除；
+尾部分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，开发时间和开发者id。
+ 
+图5-12 分类管理页面展示
+关键代码如下：
+ @PostMapping("/types/{id}")
+public String editPost(@Valid Type type, BindingResult result,@PathVariable Long id, RedirectAttributes attributes) {
+    Type type1 = typeService.getTypeByName(type.getName());
+    if (type1 != null) {
+        result.rejectValue("name","nameError","不能添加重复的分类");
+    }
+    if (result.hasErrors()) {
+        return "admin/types-input";
+    }
+    Type t = typeService.updateType(id,type);
+    if (t == null ) {
+        attributes.addFlashAttribute("message", "更新失败");
+    } else {
+        attributes.addFlashAttribute("message", "更新成功");
+    }
+    return "redirect:/admin/types";
+}
+@GetMapping("/types/{id}/delete")
+public String delete(@PathVariable Long id,RedirectAttributes attributes) {
+    typeService.deleteType(id);
+    attributes.addFlashAttribute("message", "删除成功");
+    return "redirect:/admin/types";
+}
+5.3.6 新增分类页面
+新增分类课程页面从上至下分为三个部分，分别为头部，中部，尾部，设计图如图5-13所示。
+头部是系统的名称，以及导航栏菜单，和账号管理图标。
+中部是添加的分类名称的列表以及有返回和提交的按钮；
+尾部分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，开发时间和开发者id。
+
+图5-13 新增分类页面展示
+关键代码如下：
+@PostMapping("/types")
+public String post(@Valid Type type,BindingResult result, RedirectAttributes attributes) {
+    Type type1 = typeService.getTypeByName(type.getName());
+    if (type1 != null) {
+        result.rejectValue("name","nameError","不能添加重复的分类");
+    }
+    if (result.hasErrors()) { return "admin/types-input";
+    }
+    Type t = typeService.saveType(type);
+    if (t == null ) { attributes.addFlashAttribute("message", "新增失败");
+    } else {
+        attributes.addFlashAttribute("message", "新增成功");
+    }
+    return "redirect:/admin/types";
+}
+5.3.7 标签页面管理模块
+标签页面从上至下分为三个部分，分别为头部，中部，尾部，设计图如图5-14所示。
+头部是系统的名称，以及导航栏菜单，和账号管理图标。
+中部是标签管理表单，有序号，名称和操作，能进行修改和删除，以及下一页按钮和新增按钮；
+尾部分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，开发时间和开发者id；
+
+图5-14 标签管理页面展示
+关键代码如下：
+@PostMapping("/tags/{id}")
+public String editPost(@Valid Tag tag, BindingResult result,@PathVariable Long id, RedirectAttributes attributes) {
+    Tag tag1 = tagService.getTagByName(tag.getName());
+    if (tag1 != null) {
+        result.rejectValue("name","nameError","不能添加重复的标签");
+    }
+    if (result.hasErrors()) {
+        return "admin/tags-input";
+    }
+    Tag t = tagService.updateTag(id,tag);
+    if (t == null ) {
+        attributes.addFlashAttribute("message", "更新失败");
+    } else {
+        attributes.addFlashAttribute("message", "更新成功");
+    }
+    return "redirect:/admin/tags";
+}
+@GetMapping("/tags/{id}/delete")
+public String delete(@PathVariable Long id,RedirectAttributes attributes) {
+    tagService.deleteTag(id);
+    attributes.addFlashAttribute("message", "删除成功");
+    return "redirect:/admin/tags";
+}
+5.3.8 新增标签设计
+新增标签页面从上至下分为三个部分，分别为头部，中部，尾部，设计图如图5-15所示。
+头部是系统的名称，以及导航栏菜单，和账号管理图标。
+中部是添加的标签名称的列表以及返回和提交的按钮；
+尾部分为四列，分别为二维码图标展示，最新课程，个人信息联系，和个人的介绍，最下面就是系统开发的相关信息，开发时间和开发者id；
+
+
+图5-15 新增标签页面展示
+关键代码如下：
+ @PostMapping("/tags")
+public String post(@Valid Tag tag,BindingResult result, RedirectAttributes attributes) {
+    Tag tag1 = tagService.getTagByName(tag.getName());
+    if (tag1 != null) {
+        result.rejectValue("name","nameError","不能添加重复的分类");
+    }
+    if (result.hasErrors()) {
+        return "admin/tags-input";
+    }
+    Tag t = tagService.saveTag(tag);
+    if (t == null ) {
+        attributes.addFlashAttribute("message", "新增失败");
+    } else {
+        attributes.addFlashAttribute("message", "新增成功");
+    }
+    return "redirect:/admin/tags";
+}
+6 系统测试 
+6.1 测试环境和条件
+安装有Web浏览器、Windows系统、Linux系统、mac系统、ios系统、安卓系统。
+6.2 测试目的
+目的是确保系统的最终质量能否符合预期，在系统设计和开发的历程中，对系统产品进行验证质量是否过关，需要对系统进行测试，对已经实现的功能进行测试，以及链接测试，发现系统潜在的bug，提高用户的体验。
+6.3 测试方法
+系统的测试方法有很多，使用的测试工具也很多，最广为人们熟悉就是黑盒测试和白盒测试，本次测试主要采用黑盒测试进行基本功能测试和链接测试，以及使用Jmeter进行接口测试。以下便介绍一下什么是黑盒测试，黑盒测试的概念和常用方法。
+黑盒测试：就是将程序比作是密封的黑匣子，不看程序内部的结构，以用户的角度，从输入数据与输出数据是否对应验证，最常用的黑盒测试方法有：等价类法、边界值分析法、错误的推测法、因果图法、判定表驱动法、正交试验设计法、功能图法、场景法等。
+6.4 测试用例
+6.4.1 前台测试用例与结果
+前台的部分测试用例，如表6-1所示：
+表6-1 系统前台测试用例
+6.4.2 后台测试用例与结果
+后台的测试用例，如表6-2所示：
+表6-2 系统后台测试用例
+编号
+目的
+前提步骤
+期待结果
+实际结果
+1
+登录检查
+正确账号和密码
+登录成功
+登录成功
+2
+登录检查
+输入错误账号和密码
+登录失败，提示用户和密码名错误
+登录失败，提示用户和密码名错误
+编号
+目的
+前提步骤
+期待结果
+实际结果（续表6-2）
+3
+登录检查
+输入账号，不输密码
+提示请输入密码
+提示请输入密码
+5
+页面检查
+输入正确账号和密码
+首页欢迎语显示，首页图片正常显示，文字美观
+首页欢迎语显示，首页图片正常显示，文字美观
+6
+注销账号
+点击管理员头像，注销
+正常注销账号
+正常注销账号
+7
+新增课程
+点击新增课程，添加文章，视频
+新增课程成功
+新增课程成功
+8
+修改课程
+点击修改课程，能输入课程标题和内容
+修改课程成功
+修改课程成功
+9
+删除课程
+选中一篇课程，删除课程
+删除成功，前台该课程不存在
+删除成功，前台该课程不存在
+10
+新增分类
+点击新增分类，输入分类名称
+新增分类成功
+新增分类成功
+11
+修改分类
+点击新增分类，修改分类名称
+修改分类成功
+修改分类成功
+12
+删除分类
+选中一个分类，删除分类
+删除成功，前台该分类不存在
+删除成功，前台该分类不存在
+13
+新增标签
+点击新增标签，输入标签名称
+新增标签成功
+新增标签成功
+14
+修改标签
+点击修改标签，修改标签名称
+修改标签成功
+修改标签成功
+15
+删除标签
+点击删除标签，删除标签
+删除成功，前台该标签不存在
+删除成功，前台该标签不存在
+6.5 测试结论
+通过这次的测试，基本能够满足用户需求，并且系统无存在阻塞的bug，能达到项目的预期效果。
+ 
+ 
+ 
+
+7 总结和展望
+在这次设计过程中，不管是技术上，采用的语言上，还是修改bug上面都遇到过很多困难，查阅了很多相关的资料，报告以及技术论坛等，因为网络的时代，遇到的问题基本上能够在网络上得到答案，因此也能磕磕碰碰的完成了设计，回想起这段时间，难忘又十分有意义的，也很感谢自己这段时间的努力，虽然系统和报告都还有很多不完善和不足的地方，经过这段实践的努力，使我得到了很多对软件项目编程规范，实战的新知识，能完成这个系统也是我的能力范围之内了，同时也意识到我的知识欠缺，之后的学习生涯更是要不断的学习新旧知识。
+2021年12月份开始，经过和导师的多次谈论和交流，确定了我的设计题目和开题报告，同时也确定了开发系统和开发语言，和采用的数据库等。前期主要是资料收集，阅读文献，以及复习和查缺补漏语言部分，确定需求说明；中期就开始建立数据库表，前端页面设计，以及底层代码编写；后期就是系统的功能测试，接口测试等，紧接着就是现在2022年3月初稿的完成，接下来还要继续完善报告格式和系统，积极听取导师建议。
+最后，虽然我的系统有欠缺的地方，比如说不能从本地上传视频，这也是我得一个遗憾，这是我目前能力尚未达到的地方，之后要多加努力的完善，但是我的新六艺学习系统还是有他的一些亮点的地方，比如博客式参与性的学习系统，为了拥有体验感良好的编辑器，使用了MarkDown编辑器插件，访客可以进行评论点赞，后台评论也有审核功能等亮点。回想起开发系统的过程，我也吸取了很多的教训，前期一定要确定好需求说明，这样就不会在开发的时候摇摆不定，另外就是不管是开发的过程还是报告编写，都要多参考文献，一定要脚踏实地的完成，无论多大的困难，只要努力了就能克服，经过这次的磨炼也将是我能力的提升。
+ 
+ 
+ 
+ 
+  
+参考文献
+    [1]  中小学专题学习系统的设计策略[J]. 郑志群.  电化教育研究. 2002(06)
+    [2]  课程教学资源整合系统的设计与实现[D]. 陈锋.华中师范大学 2007
+    [3]  “互联网+”背景下中职学校系统学习模式的研究与实践[J]. 梁永坚,陈焜.  卫生职业教育. 2018(02)
+    [4]  ASP.NET网络应用开发例学与实践[M]. 清华大学出版社 , 郭常圳,李云锦编著, 2006
+    [5]  中小学主题学习系统功能定位与评价[J]. 冯秀琪,李晓岩.  远程教育杂志. 2005(06)
+    [6]  网络课程设计与开发的实践探索[J]. 纪永毅,黄建军.  电化教育研究. 2004(05)
+    [7]  《教育软件设计与开发》网络课程系统设计[J]. 李志河,毛丽丽,王佳.  中国教育信息化. 2016(07)
+    [8]  教师智慧学习的交互式系统建构研究[D]. 李慧方.西南大学 2016
+    [9]  Journal of Ambient Intelligence and Humanized Computing2021. PP 1-12
+    [10]  [J]Education Research FrontierVolume 11, Issue 1. 2021. PP 49-53
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+附录 
+//日志管理代码
+package com.totoro.aspect;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+@Aspect
+@Component
+public class LogAspect {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Pointcut("execution(* com.totoro.web.*.*(..))")
+    public void log() {}
+    @Before("log()")
+    public void doBefore(JoinPoint joinPoint) {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        String url = request.getRequestURL().toString();
+        String ip = request.getRemoteAddr();
+        String classMethod = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        RequestLog requestLog = new RequestLog(url, ip, classMethod, args);
+        logger.info("Request : {}", requestLog);
+    }
+    @After("log()")
+    public void doAfter() {
+//        logger.info("--------doAfter--------");
+    }
+    @AfterReturning(returning = "result",pointcut = "log()")
+    public void doAfterRuturn(Object result) {
+        logger.info("Result : {}", result);
+    }
+    private class RequestLog {
+        private String url;
+        private String ip;
+        private String classMethod;
+        private Object[] args;
+        public RequestLog(String url, String ip, String classMethod, Object[] args) {
+            this.url = url;
+            this.ip = ip;
+            this.classMethod = classMethod;
+            this.args = args;
+        }
+        @Override
+        public String toString() {
+            return "{" +"url='" + url + '\'' +
+                    ", ip='" + ip + '\'' +
+                    ", classMethod='" + classMethod + '\'' +
+                    ", args=" + Arrays.toString(args) +
+                    '}';
+        } }}
+//前台首页代码
+package com.totoro.web;
+import com.totoro.NotFoundException;
+import com.totoro.service.BlogService;
+import com.totoro.service.TagService;
+import com.totoro.service.TypeService;
+import com.totoro.vo.BlogQuery;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+/**
+ * Created by limi on 2017/10/13.
+ */
+@Controller
+public class IndexController {
+    @Autowired
+    private BlogService blogService;
+    @Autowired
+    private TypeService typeService;
+    @Autowired
+    private TagService tagService;
+    @GetMapping("/")
+    public String index(@PageableDefault(size = 8, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+                        Model model) {
+        model.addAttribute("page",blogService.listBlog(pageable));
+        model.addAttribute("types", typeService.listTypeTop(6));
+        model.addAttribute("tags", tagService.listTagTop(10));
+        model.addAttribute("recommendBlogs", blogService.listRecommendBlogTop(8));
+        return "index";
+    }
+    @PostMapping("/search")
+    public String search(@PageableDefault(size = 8, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+                         @RequestParam String query, Model model) {
+        model.addAttribute("page", blogService.listBlog("%"+query+"%", pageable));
+        model.addAttribute("query", query);
+        return "search";
+    }
+    @GetMapping("/blog/{id}")
+    public String blog(@PathVariable Long id,Model model) {
+        model.addAttribute("blog", blogService.getAndConvert(id));
+        return "blog";
+    }
+    @GetMapping("/footer/newblog")
+    public String newblogs(Model model) {
+        model.addAttribute("newblogs", blogService.listRecommendBlogTop(3));
+        return "_fragments :: newblogList";
+    }
+}
+
+
+//后台首页代码
+package com.totoro.web.admin;
+import com.totoro.po.Blog;
+import com.totoro.po.Type;
+import com.totoro.po.User;
+import com.totoro.service.BlogService;
+import com.totoro.service.TagService;
+import com.totoro.service.TypeService;
+import com.totoro.vo.BlogQuery;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import javax.servlet.http.HttpSession;
+@Controller
+@RequestMapping("/admin")
+public class BlogController {
+    private static final String INPUT = "admin/blogs-input";
+    private static final String LIST = "admin/blogs";
+    private static final String REDIRECT_LIST = "redirect:/admin/blogs";
+    @Autowired
+    private BlogService blogService;
+    @Autowired
+    private TypeService typeService;
+    @Autowired
+    private TagService tagService;
+    @GetMapping("/blogs")
+    public String blogs(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+                        BlogQuery blog, Model model) {
+        model.addAttribute("types", typeService.listType());
+        model.addAttribute("page", blogService.listBlog(pageable, blog));
+        return LIST;
+    }
+
+    @PostMapping("/blogs/search")
+    public String search(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+                         BlogQuery blog, Model model) {
+        model.addAttribute("page", blogService.listBlog(pageable, blog));
+        return "admin/blogs :: blogList";
+    }
+    @GetMapping("/blogs/input")
+    public String input(Model model) {
+        setTypeAndTag(model);
+        model.addAttribute("blog", new Blog());
+        return INPUT;
+    }
+
+    private void setTypeAndTag(Model model) {
+        model.addAttribute("types", typeService.listType());
+        model.addAttribute("tags", tagService.listTag());
+    }
+    @GetMapping("/blogs/{id}/input")
+    public String editInput(@PathVariable Long id, Model model) {
+        setTypeAndTag(model);
+        Blog blog = blogService.getBlog(id);
+        blog.init();
+        model.addAttribute("blog",blog);
+        return INPUT;
+    }
+    @PostMapping("/blogs")
+    public String post(Blog blog, RedirectAttributes attributes, HttpSession session) {
+        blog.setUser((User) session.getAttribute("user"));
+        blog.setType(typeService.getType(blog.getType().getId()));
+        blog.setTags(tagService.listTag(blog.getTagIds()));
+        Blog b;
+        if (blog.getId() == null) {
+            b =  blogService.saveBlog(blog);
+        } else {
+            b = blogService.updateBlog(blog.getId(), blog);
+        }
+
+        if (b == null ) {
+            attributes.addFlashAttribute("message", "操作失败");
+        } else {
+            attributes.addFlashAttribute("message", "操作成功");
+        }
+        return REDIRECT_LIST;
+    }
+    @GetMapping("/blogs/{id}/delete")
+    public String delete(@PathVariable Long id,RedirectAttributes attributes) {
+        blogService.deleteBlog(id);
+        attributes.addFlashAttribute("message", "删除成功");
+        return REDIRECT_LIST;
+    }
+}
+
