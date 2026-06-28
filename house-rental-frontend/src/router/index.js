@@ -93,16 +93,16 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/house-view',
+    path: '/house-browse',
     component: Layout,
-    redirect: '/house-view/list',
+    redirect: '/house-browse/list',
     meta: { title: '房屋浏览', icon: 'el-icon-house', roles: ['USER'] },
     children: [
       {
         path: 'list',
-        name: 'HouseViewList',
-        component: () => import('@/views/house/info/index.vue'),
-        meta: { title: '房屋列表', icon: 'el-icon-house', roles: ['USER'] }
+        name: 'HouseBrowse',
+        component: () => import('@/views/tenant/house-list/index.vue'),
+        meta: { title: '浏览房屋', icon: 'el-icon-house', roles: ['USER'] }
       }
     ]
   },
@@ -114,8 +114,8 @@ export const constantRoutes = [
     children: [
       {
         path: 'list',
-        name: 'MyOrderList',
-        component: () => import('@/views/order/lease/index.vue'),
+        name: 'MyOrder',
+        component: () => import('@/views/tenant/my-order/index.vue'),
         meta: { title: '我的订单', icon: 'el-icon-s-order', roles: ['USER'] }
       }
     ]

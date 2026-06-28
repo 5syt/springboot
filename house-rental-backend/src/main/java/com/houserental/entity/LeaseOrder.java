@@ -48,4 +48,7 @@ public class LeaseOrder extends BaseEntity {
     @TableField(exist = false)
     private String houseTitle;
 
+    @TableField(exist = false)
+    private Integer leaseMonths;
+
 }

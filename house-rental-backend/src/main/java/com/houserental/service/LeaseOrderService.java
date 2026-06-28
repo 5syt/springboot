@@ -20,4 +20,8 @@ public interface LeaseOrderService extends IService<LeaseOrder> {
 
     void updateStatus(Long id, Integer status);
 
+    IPage<LeaseOrder> pageMyOrder(Long pageNum, Long pageSize, Integer status, Long userId);
+
+    void applyOrder(LeaseOrder leaseOrder);
+
 }

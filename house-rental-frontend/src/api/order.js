@@ -45,3 +45,19 @@ export function updateOrderStatus(id, status) {
     data: { status }
   })
 }
+
+export function getMyOrderList(params) {
+  return request({
+    url: '/order/lease/my/page',
+    method: 'get',
+    params
+  })
+}
+
+export function applyLease(data) {
+  return request({
+    url: '/order/lease/apply',
+    method: 'post',
+    data
+  })
+}

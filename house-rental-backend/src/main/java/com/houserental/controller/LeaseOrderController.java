@@ -3,8 +3,11 @@ package com.houserental.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.houserental.common.Result;
 import com.houserental.entity.LeaseOrder;
+import com.houserental.entity.SysUser;
+import com.houserental.security.LoginUser;
 import com.houserental.service.LeaseOrderService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +33,17 @@ public class LeaseOrderController {
         return Result.success(page);
     }
 
+    @GetMapping("/my/page")
+    public Result<IPage<LeaseOrder>> myPage(
+            @RequestParam(defaultValue = "1") Long pageNum,
+            @RequestParam(defaultValue = "10") Long pageSize,
+            @RequestParam(required = false) Integer status) {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SysUser sysUser = loginUser.getSysUser();
+        IPage<LeaseOrder> page = leaseOrderService.pageMyOrder(pageNum, pageSize, status, sysUser.getId());
+        return Result.success(page);
+    }
+
     @GetMapping("/{id}")
     public Result<LeaseOrder> getById(@PathVariable Long id) {
         LeaseOrder order = leaseOrderService.getOrderDetail(id);
@@ -39,6 +53,17 @@ public class LeaseOrderController {
     @PostMapping
     public Result<Void> add(@RequestBody LeaseOrder leaseOrder) {
         leaseOrderService.addOrder(leaseOrder);
+        return Result.success();
+    }
+
+    @PostMapping("/apply")
+    public Result<Void> apply(@RequestBody LeaseOrder leaseOrder) {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SysUser sysUser = loginUser.getSysUser();
+        leaseOrder.setTenantId(sysUser.getId());
+        leaseOrder.setTenantName(sysUser.getNickname() != null ? sysUser.getNickname() : sysUser.getUsername());
+        leaseOrder.setTenantPhone(sysUser.getPhone());
+        leaseOrderService.applyOrder(leaseOrder);
         return Result.success();
     }
 
