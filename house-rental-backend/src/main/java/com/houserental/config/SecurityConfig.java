@@ -51,16 +51,30 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
+            .formLogin().disable()
+            .httpBasic().disable()
             .cors().configurationSource(corsConfigurationSource())
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/health", "/captcha", "/static/**", "/files/**").permitAll()
+            .antMatchers("/health", "/captcha", "/static/**", "/files/**", "/error").permitAll()
             .antMatchers("/api/auth/**").permitAll()
             .antMatchers("/api/house/type/list").permitAll()
             .antMatchers("/api/announcement/list").permitAll()
-            .anyRequest().authenticated();
+            .anyRequest().authenticated()
+            .and()
+            .exceptionHandling()
+            .authenticationEntryPoint((request, response, authException) -> {
+                response.setStatus(401);
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write("{\"code\":401,\"message\":\"未授权，请先登录\",\"data\":null}");
+            })
+            .accessDeniedHandler((request, response, accessDeniedException) -> {
+                response.setStatus(403);
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write("{\"code\":403,\"message\":\"没有访问权限\",\"data\":null}");
+            });
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
