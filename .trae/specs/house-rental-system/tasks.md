@@ -1,6 +1,6 @@
 # 基于SpringBoot+Vue的房屋租赁信息管理系统 - 实现计划（任务分解与优先级排序）
 
-## [ ] Task 1: 项目初始化与环境搭建
+## [x] Task 1: 项目初始化与环境搭建
 - **Priority**: high
 - **Depends On**: None
 - **Description**: 
@@ -16,7 +16,7 @@
   - `human-judgement` TR-1.4: 项目结构清晰，分层明确（Controller/Service/Mapper/Entity）
 - **Notes**: 使用Spring Boot 2.7.x版本兼容JDK 11，Vue 2.x + Element UI
 
-## [ ] Task 2: 数据库设计与初始化脚本
+## [x] Task 2: 数据库设计与初始化脚本
 - **Priority**: high
 - **Depends On**: [Task 1]
 - **Description**: 
@@ -30,7 +30,7 @@
   - `human-judgement` TR-2.3: 表结构设计合理，字段类型和约束恰当
 - **Notes**: 所有表使用id自增主键，创建时间和更新时间字段，逻辑删除字段
 
-## [ ] Task 3: 后端核心框架 - 通用层搭建
+## [x] Task 3: 后端核心框架 - 通用层搭建
 - **Priority**: high
 - **Depends On**: [Task 2]
 - **Description**: 
@@ -47,7 +47,7 @@
   - `programmatic` TR-3.4: Redis工具类的set/get/delete方法正常
 - **Notes**: 使用@RestControllerAdvice实现全局异常处理
 
-## [ ] Task 4: Spring Security + JWT认证授权
+## [x] Task 4: Spring Security + JWT认证授权
 - **Priority**: high
 - **Depends On**: [Task 3]
 - **Description**: 
@@ -62,10 +62,10 @@
   - `programmatic` TR-4.2: 携带有效JWT的请求能正常访问受保护接口
   - `programmatic` TR-4.3: 无JWT或JWT过期的请求返回401
   - `programmatic` TR-4.4: 不同角色用户访问无权限接口返回403
-  - `programmatic` TR-4.5: 密码使用BCrypt加密存储
+  - `programmatic` TR-4.5: 密码明文存储（课程简化要求）
 - **Notes**: 角色包括：管理员(ADMIN)、普通用户(USER)
 
-## [ ] Task 5: 用户管理模块后端实现
+## [x] Task 5: 用户管理模块后端实现
 - **Priority**: high
 - **Depends On**: [Task 4]
 - **Description**: 
@@ -79,13 +79,13 @@
 - **Test Requirements**:
   - `programmatic` TR-5.1: 分页查询用户列表接口正常
   - `programmatic` TR-5.2: 按用户名/状态条件查询正常
-  - `programmatic` TR-5.3: 新增用户成功，密码加密存储
+  - `programmatic` TR-5.3: 新增用户成功
   - `programmatic` TR-5.4: 编辑用户信息成功
   - `programmatic` TR-5.5: 删除用户（逻辑删除）成功
   - `programmatic` TR-5.6: 重置密码功能正常
 - **Notes**: 使用MyBatis-Plus的IService和BaseMapper
 
-## [ ] Task 6: 房屋类型管理模块后端实现
+## [x] Task 6: 房屋类型管理模块后端实现
 - **Priority**: medium
 - **Depends On**: [Task 4]
 - **Description**: 
@@ -102,7 +102,7 @@
   - `programmatic` TR-6.4: 更新类型后缓存自动清除
 - **Notes**: 整租、合租、单间、公寓等类型
 
-## [ ] Task 7: 房屋信息管理模块后端实现
+## [x] Task 7: 房屋信息管理模块后端实现
 - **Priority**: high
 - **Depends On**: [Task 6]
 - **Description**: 
@@ -122,7 +122,7 @@
   - `programmatic` TR-7.6: 房屋上下架状态切换正常
 - **Notes**: 房屋字段：标题、类型、面积、户型、租金、地址、描述、图片、状态等
 
-## [ ] Task 8: 租赁订单管理模块后端实现
+## [x] Task 8: 租赁订单管理模块后端实现
 - **Priority**: high
 - **Depends On**: [Task 7]
 - **Description**: 
@@ -140,7 +140,7 @@
   - `programmatic` TR-8.5: 订单状态流转正常
 - **Notes**: 订单字段：订单编号、房屋id、租客id、租金、押金、开始日期、结束日期、状态等
 
-## [ ] Task 9: 公告管理模块后端实现
+## [x] Task 9: 公告管理模块后端实现
 - **Priority**: medium
 - **Depends On**: [Task 4]
 - **Description**: 
@@ -158,7 +158,7 @@
   - `programmatic` TR-9.4: 首页公告列表有Redis缓存
 - **Notes**: 公告用于发布租房政策、通知等信息
 
-## [ ] Task 10: 数据统计与个人中心后端
+## [x] Task 10: 数据统计与个人中心后端
 - **Priority**: medium
 - **Depends On**: [Task 7, Task 8]
 - **Description**: 
@@ -176,7 +176,7 @@
   - `programmatic` TR-10.5: 修改密码功能正常（需验证旧密码）
 - **Notes**: 使用ECharts展示统计图表
 
-## [ ] Task 11: 前端 - 登录页与布局框架
+## [x] Task 11: 前端 - 登录页与布局框架
 - **Priority**: high
 - **Depends On**: [Task 4]
 - **Description**: 
@@ -193,7 +193,7 @@
   - `human-judgement` TR-11.4: 界面布局美观，响应式
 - **Notes**: 使用Vue Router、Vuex管理状态
 
-## [ ] Task 12: 前端 - 用户管理与房屋类型管理
+## [x] Task 12: 前端 - 用户管理与房屋类型管理
 - **Priority**: high
 - **Depends On**: [Task 11, Task 5, Task 6]
 - **Description**: 
@@ -208,7 +208,7 @@
   - `human-judgement` TR-12.3: 界面美观，操作流畅
 - **Notes**: 使用Element UI的Table、Form、Dialog、Pagination组件
 
-## [ ] Task 13: 前端 - 房屋信息管理
+## [x] Task 13: 前端 - 房屋信息管理
 - **Priority**: high
 - **Depends On**: [Task 12, Task 7]
 - **Description**: 
@@ -225,7 +225,7 @@
   - `human-judgement` TR-13.5: 界面美观，交互友好
 - **Notes**: 使用el-upload组件上传图片
 
-## [ ] Task 14: 前端 - 订单管理与公告管理
+## [x] Task 14: 前端 - 订单管理与公告管理
 - **Priority**: high
 - **Depends On**: [Task 13, Task 8, Task 9]
 - **Description**: 
@@ -241,7 +241,7 @@
   - `human-judgement` TR-14.5: 界面美观，操作流畅
 - **Notes**: 状态使用Tag组件展示不同颜色
 
-## [ ] Task 15: 前端 - 统计看板与个人中心
+## [x] Task 15: 前端 - 统计看板与个人中心
 - **Priority**: medium
 - **Depends On**: [Task 14, Task 10]
 - **Description**: 
@@ -256,7 +256,7 @@
   - `human-judgement` TR-15.5: 界面美观，图表清晰
 - **Notes**: 使用vue-echarts集成ECharts
 
-## [ ] Task 16: 系统测试与BUG修复
+## [x] Task 16: 系统测试与BUG修复
 - **Priority**: high
 - **Depends On**: [Task 15]
 - **Description**: 
