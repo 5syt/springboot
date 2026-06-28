@@ -5,16 +5,25 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.houserental.entity.House;
+import com.houserental.entity.HouseType;
 import com.houserental.exception.BusinessException;
 import com.houserental.mapper.HouseMapper;
 import com.houserental.service.HouseService;
+import com.houserental.service.HouseTypeService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements HouseService {
+
+    @Resource
+    private HouseTypeService houseTypeService;
 
     @Override
     public IPage<House> pageHouse(Long pageNum, Long pageSize, Long typeId, BigDecimal minPrice, BigDecimal maxPrice, Integer status, String keyword) {
@@ -36,7 +45,9 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
         }
         wrapper.orderByDesc(House::getCreateTime);
         Page<House> page = new Page<>(pageNum, pageSize);
-        return page(page, wrapper);
+        IPage<House> result = page(page, wrapper);
+        fillTypeName(result.getRecords());
+        return result;
     }
 
     @Override
@@ -45,6 +56,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
         if (house == null) {
             throw new BusinessException("房屋不存在");
         }
+        fillTypeName(java.util.Collections.singletonList(house));
         return house;
     }
 
@@ -87,6 +99,23 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
         Integer newStatus = (currentStatus == 0 || currentStatus == 2) ? 1 : 0;
         house.setStatus(newStatus);
         updateById(house);
+    }
+
+    private void fillTypeName(List<House> list) {
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+        try {
+            List<HouseType> allTypes = houseTypeService.list();
+            Map<Long, String> typeMap = allTypes.stream()
+                    .collect(Collectors.toMap(HouseType::getId, HouseType::getName, (a, b) -> a));
+            for (House house : list) {
+                if (house.getTypeId() != null && typeMap.containsKey(house.getTypeId())) {
+                    house.setTypeName(typeMap.get(house.getTypeId()));
+                }
+            }
+        } catch (Exception e) {
+        }
     }
 
 }

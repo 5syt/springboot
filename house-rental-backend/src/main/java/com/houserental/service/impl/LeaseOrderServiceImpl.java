@@ -4,20 +4,29 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.houserental.entity.House;
 import com.houserental.entity.LeaseOrder;
 import com.houserental.exception.BusinessException;
 import com.houserental.mapper.LeaseOrderMapper;
+import com.houserental.service.HouseService;
 import com.houserental.service.LeaseOrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class LeaseOrderServiceImpl extends ServiceImpl<LeaseOrderMapper, LeaseOrder> implements LeaseOrderService {
+
+    @Resource
+    private HouseService houseService;
 
     @Override
     public IPage<LeaseOrder> pageOrder(Long pageNum, Long pageSize, Integer status, LocalDate startTime, LocalDate endTime, String keyword) {
@@ -36,7 +45,9 @@ public class LeaseOrderServiceImpl extends ServiceImpl<LeaseOrderMapper, LeaseOr
         }
         wrapper.orderByDesc(LeaseOrder::getCreateTime);
         Page<LeaseOrder> page = new Page<>(pageNum, pageSize);
-        return page(page, wrapper);
+        IPage<LeaseOrder> result = page(page, wrapper);
+        fillHouseTitle(result.getRecords());
+        return result;
     }
 
     @Override
@@ -45,6 +56,7 @@ public class LeaseOrderServiceImpl extends ServiceImpl<LeaseOrderMapper, LeaseOr
         if (order == null) {
             throw new BusinessException("订单不存在");
         }
+        fillHouseTitle(java.util.Collections.singletonList(order));
         return order;
     }
 
@@ -93,6 +105,23 @@ public class LeaseOrderServiceImpl extends ServiceImpl<LeaseOrderMapper, LeaseOr
         }
         order.setStatus(status);
         updateById(order);
+    }
+
+    private void fillHouseTitle(List<LeaseOrder> list) {
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+        try {
+            List<House> allHouses = houseService.list();
+            Map<Long, String> houseMap = allHouses.stream()
+                    .collect(Collectors.toMap(House::getId, House::getTitle, (a, b) -> a));
+            for (LeaseOrder order : list) {
+                if (order.getHouseId() != null && houseMap.containsKey(order.getHouseId())) {
+                    order.setHouseTitle(houseMap.get(order.getHouseId()));
+                }
+            }
+        } catch (Exception e) {
+        }
     }
 
     private String generateOrderNo() {

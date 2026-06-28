@@ -1,5 +1,6 @@
 package com.houserental.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,5 +38,19 @@ public class LeaseOrder extends BaseEntity {
     private Integer status;
 
     private String remark;
+
+    @TableField(exist = false)
+    private String houseTitle;
+
+    @TableField(exist = false)
+    private BigDecimal rent;
+
+    public BigDecimal getRent() {
+        return this.monthRent;
+    }
+
+    public void setRent(BigDecimal rent) {
+        this.monthRent = rent;
+    }
 
 }

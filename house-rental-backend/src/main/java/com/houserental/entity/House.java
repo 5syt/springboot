@@ -1,5 +1,6 @@
 package com.houserental.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -44,5 +45,30 @@ public class House extends BaseEntity {
     private Integer status;
 
     private Long createBy;
+
+    @TableField(exist = false)
+    private String typeName;
+
+    @TableField(exist = false)
+    private String layout;
+
+    @TableField(exist = false)
+    private BigDecimal rent;
+
+    public String getLayout() {
+        return this.rooms;
+    }
+
+    public void setLayout(String layout) {
+        this.rooms = layout;
+    }
+
+    public BigDecimal getRent() {
+        return this.rentPrice;
+    }
+
+    public void setRent(BigDecimal rent) {
+        this.rentPrice = rent;
+    }
 
 }
