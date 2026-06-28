@@ -4,7 +4,7 @@ const getters = {
   menu: state => state.user.menu,
   sidebarCollapsed: state => state.app.sidebarCollapsed,
   isLogin: state => !!state.user.token,
-  username: state => state.user.userInfo?.username || ''
+  username: state => (state.user.userInfo && state.user.userInfo.username) || ''
 }
 
 export default getters

@@ -19,23 +19,23 @@
           <template v-if="route.children && route.children.length > 0">
             <el-submenu :index="resolvePath(route.path)" :key="route.path">
               <template slot="title">
-                <i :class="route.meta?.icon || 'el-icon-menu'"></i>
-                <span slot="title">{{ route.meta?.title }}</span>
+                <i :class="(route.meta && route.meta.icon) || 'el-icon-menu'"></i>
+                <span slot="title">{{ route.meta && route.meta.title }}</span>
               </template>
               <el-menu-item
                 v-for="child in route.children"
                 :key="child.path"
                 :index="resolvePath(route.path + '/' + child.path)"
               >
-                <i :class="child.meta?.icon || 'el-icon-document'"></i>
-                <span slot="title">{{ child.meta?.title }}</span>
+                <i :class="(child.meta && child.meta.icon) || 'el-icon-document'"></i>
+                <span slot="title">{{ child.meta && child.meta.title }}</span>
               </el-menu-item>
             </el-submenu>
           </template>
           <template v-else>
             <el-menu-item :index="resolvePath(route.path)" :key="route.path">
-              <i :class="route.meta?.icon || 'el-icon-menu'"></i>
-              <span slot="title">{{ route.meta?.title }}</span>
+              <i :class="(route.meta && route.meta.icon) || 'el-icon-menu'"></i>
+              <span slot="title">{{ route.meta && route.meta.title }}</span>
             </el-menu-item>
           </template>
         </template>
@@ -48,7 +48,7 @@
           <i class="el-icon-s-fold toggle-btn" @click="toggleSideBar" :class="{'el-icon-s-unfold': isCollapse}"></i>
           <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index">
-              {{ item.meta?.title || item.name }}
+              {{ (item.meta && item.meta.title) || item.name }}
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
