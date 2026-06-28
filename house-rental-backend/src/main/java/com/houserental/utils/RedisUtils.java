@@ -1,5 +1,7 @@
 package com.houserental.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -13,103 +15,219 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtils {
 
+    private static final Logger logger = LoggerFactory.getLogger(RedisUtils.class);
+
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     public void set(String key, Object value) {
-        redisTemplate.opsForValue().set(key, value);
+        try {
+            redisTemplate.opsForValue().set(key, value);
+        } catch (Exception e) {
+            logger.warn("Redis set失败: key={}, error={}", key, e.getMessage());
+        }
     }
 
     public void set(String key, Object value, long timeout, TimeUnit unit) {
-        redisTemplate.opsForValue().set(key, value, timeout, unit);
+        try {
+            redisTemplate.opsForValue().set(key, value, timeout, unit);
+        } catch (Exception e) {
+            logger.warn("Redis set失败: key={}, error={}", key, e.getMessage());
+        }
     }
 
     public Object get(String key) {
-        return redisTemplate.opsForValue().get(key);
+        try {
+            return redisTemplate.opsForValue().get(key);
+        } catch (Exception e) {
+            logger.warn("Redis get失败: key={}, error={}", key, e.getMessage());
+            return null;
+        }
     }
 
     public Boolean delete(String key) {
-        return redisTemplate.delete(key);
+        try {
+            return redisTemplate.delete(key);
+        } catch (Exception e) {
+            logger.warn("Redis delete失败: key={}, error={}", key, e.getMessage());
+            return false;
+        }
     }
 
     public Long delete(Collection<String> keys) {
-        return redisTemplate.delete(keys);
+        try {
+            return redisTemplate.delete(keys);
+        } catch (Exception e) {
+            logger.warn("Redis delete批量失败: error={}", e.getMessage());
+            return 0L;
+        }
     }
 
     public Boolean hasKey(String key) {
-        return redisTemplate.hasKey(key);
+        try {
+            return redisTemplate.hasKey(key);
+        } catch (Exception e) {
+            logger.warn("Redis hasKey失败: key={}, error={}", key, e.getMessage());
+            return false;
+        }
     }
 
     public Boolean expire(String key, long timeout, TimeUnit unit) {
-        return redisTemplate.expire(key, timeout, unit);
+        try {
+            return redisTemplate.expire(key, timeout, unit);
+        } catch (Exception e) {
+            logger.warn("Redis expire失败: key={}, error={}", key, e.getMessage());
+            return false;
+        }
     }
 
     public Long getExpire(String key) {
-        return redisTemplate.getExpire(key);
+        try {
+            return redisTemplate.getExpire(key);
+        } catch (Exception e) {
+            logger.warn("Redis getExpire失败: key={}, error={}", key, e.getMessage());
+            return 0L;
+        }
     }
 
     public void hSet(String key, String hashKey, Object value) {
-        redisTemplate.opsForHash().put(key, hashKey, value);
+        try {
+            redisTemplate.opsForHash().put(key, hashKey, value);
+        } catch (Exception e) {
+            logger.warn("Redis hSet失败: key={}, error={}", key, e.getMessage());
+        }
     }
 
     public Object hGet(String key, String hashKey) {
-        return redisTemplate.opsForHash().get(key, hashKey);
+        try {
+            return redisTemplate.opsForHash().get(key, hashKey);
+        } catch (Exception e) {
+            logger.warn("Redis hGet失败: key={}, error={}", key, e.getMessage());
+            return null;
+        }
     }
 
     public Map<Object, Object> hGetAll(String key) {
-        return redisTemplate.opsForHash().entries(key);
+        try {
+            return redisTemplate.opsForHash().entries(key);
+        } catch (Exception e) {
+            logger.warn("Redis hGetAll失败: key={}, error={}", key, e.getMessage());
+            return null;
+        }
     }
 
     public Long hDel(String key, Object... hashKeys) {
-        return redisTemplate.opsForHash().delete(key, hashKeys);
+        try {
+            return redisTemplate.opsForHash().delete(key, hashKeys);
+        } catch (Exception e) {
+            logger.warn("Redis hDel失败: key={}, error={}", key, e.getMessage());
+            return 0L;
+        }
     }
 
     public Boolean hHasKey(String key, String hashKey) {
-        return redisTemplate.opsForHash().hasKey(key, hashKey);
+        try {
+            return redisTemplate.opsForHash().hasKey(key, hashKey);
+        } catch (Exception e) {
+            logger.warn("Redis hHasKey失败: key={}, error={}", key, e.getMessage());
+            return false;
+        }
     }
 
     public void lSet(String key, Object value) {
-        redisTemplate.opsForList().rightPush(key, value);
+        try {
+            redisTemplate.opsForList().rightPush(key, value);
+        } catch (Exception e) {
+            logger.warn("Redis lSet失败: key={}, error={}", key, e.getMessage());
+        }
     }
 
     public List<Object> lGet(String key, long start, long end) {
-        return redisTemplate.opsForList().range(key, start, end);
+        try {
+            return redisTemplate.opsForList().range(key, start, end);
+        } catch (Exception e) {
+            logger.warn("Redis lGet失败: key={}, error={}", key, e.getMessage());
+            return null;
+        }
     }
 
     public Long lSize(String key) {
-        return redisTemplate.opsForList().size(key);
+        try {
+            return redisTemplate.opsForList().size(key);
+        } catch (Exception e) {
+            logger.warn("Redis lSize失败: key={}, error={}", key, e.getMessage());
+            return 0L;
+        }
     }
 
     public void sAdd(String key, Object... values) {
-        redisTemplate.opsForSet().add(key, values);
+        try {
+            redisTemplate.opsForSet().add(key, values);
+        } catch (Exception e) {
+            logger.warn("Redis sAdd失败: key={}, error={}", key, e.getMessage());
+        }
     }
 
     public Set<Object> sMembers(String key) {
-        return redisTemplate.opsForSet().members(key);
+        try {
+            return redisTemplate.opsForSet().members(key);
+        } catch (Exception e) {
+            logger.warn("Redis sMembers失败: key={}, error={}", key, e.getMessage());
+            return null;
+        }
     }
 
     public Boolean sIsMember(String key, Object value) {
-        return redisTemplate.opsForSet().isMember(key, value);
+        try {
+            return redisTemplate.opsForSet().isMember(key, value);
+        } catch (Exception e) {
+            logger.warn("Redis sIsMember失败: key={}, error={}", key, e.getMessage());
+            return false;
+        }
     }
 
     public Long sSize(String key) {
-        return redisTemplate.opsForSet().size(key);
+        try {
+            return redisTemplate.opsForSet().size(key);
+        } catch (Exception e) {
+            logger.warn("Redis sSize失败: key={}, error={}", key, e.getMessage());
+            return 0L;
+        }
     }
 
     public Long sRemove(String key, Object... values) {
-        return redisTemplate.opsForSet().remove(key, values);
+        try {
+            return redisTemplate.opsForSet().remove(key, values);
+        } catch (Exception e) {
+            logger.warn("Redis sRemove失败: key={}, error={}", key, e.getMessage());
+            return 0L;
+        }
     }
 
     public void zAdd(String key, Object value, double score) {
-        redisTemplate.opsForZSet().add(key, value, score);
+        try {
+            redisTemplate.opsForZSet().add(key, value, score);
+        } catch (Exception e) {
+            logger.warn("Redis zAdd失败: key={}, error={}", key, e.getMessage());
+        }
     }
 
     public Set<Object> zRange(String key, long start, long end) {
-        return redisTemplate.opsForZSet().range(key, start, end);
+        try {
+            return redisTemplate.opsForZSet().range(key, start, end);
+        } catch (Exception e) {
+            logger.warn("Redis zRange失败: key={}, error={}", key, e.getMessage());
+            return null;
+        }
     }
 
     public Long zRemove(String key, Object... values) {
-        return redisTemplate.opsForZSet().remove(key, values);
+        try {
+            return redisTemplate.opsForZSet().remove(key, values);
+        } catch (Exception e) {
+            logger.warn("Redis zRemove失败: key={}, error={}", key, e.getMessage());
+            return 0L;
+        }
     }
 
 }
