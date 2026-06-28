@@ -18,11 +18,12 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           await store.dispatch('user/getMenu')
-          const accessRoutes = asyncRoutes
-          router.addRoutes(accessRoutes)
+          resetRouter()
+          router.addRoutes(asyncRoutes)
           router.addRoutes([{ path: '*', redirect: '/404', hidden: true }])
           next({ ...to, replace: true })
         } catch (error) {
+          console.error('获取菜单失败:', error)
           await store.dispatch('user/resetToken')
           next(`/login?redirect=${to.path}`)
         }
@@ -39,3 +40,8 @@ router.beforeEach(async(to, from, next) => {
 
 router.afterEach(() => {
 })
+
+const originalPush = router.push
+router.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}

@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function getStatistics() {
   return request({
-    url: '/statistics/overview',
+    url: '/statistics/dashboard',
     method: 'get'
   })
 }
 
 export function getHouseTypeStatistics() {
   return request({
-    url: '/statistics/houseType',
+    url: '/statistics/houseTypePie',
     method: 'get'
   })
 }

@@ -152,9 +152,9 @@ export default {
         const res = await getStatistics()
         const data = res.data || {}
         this.statCards[0].value = data.houseTotal || 0
-        this.statCards[1].value = data.rentedHouse || 0
+        this.statCards[1].value = data.houseRenting || 0
         this.statCards[2].value = data.orderTotal || 0
-        this.statCards[3].value = data.monthNewOrder || 0
+        this.statCards[3].value = data.monthNewOrders || 0
       } catch (error) {
         console.error('获取统计数据失败:', error)
       }
@@ -166,7 +166,7 @@ export default {
         const data = res.data || []
         this.pieOption.series[0].data = data.map(item => ({
           name: item.name,
-          value: item.count
+          value: item.value
         }))
       } catch (error) {
         console.error('获取房屋类型统计失败:', error)
@@ -178,10 +178,12 @@ export default {
       this.lineLoading = true
       try {
         const res = await getOrderTrendStatistics()
-        const data = res.data || []
-        this.lineOption.series[0].data = data.map(item => item.count)
-        if (data.length > 0) {
-          this.lineOption.xAxis.data = data.map(item => item.month)
+        const data = res.data || {}
+        const months = data.months || []
+        const counts = data.counts || []
+        this.lineOption.series[0].data = counts
+        if (months.length > 0) {
+          this.lineOption.xAxis.data = months
         }
       } catch (error) {
         console.error('获取订单趋势统计失败:', error)
