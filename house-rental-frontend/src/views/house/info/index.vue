@@ -62,7 +62,7 @@
               active-value="1"
               inactive-value="0"
               :loading="switchLoading"
-              @change="(val) => handleStatusChange(scope.row, val)"
+              @change="handleStatusChange(scope.row, $event)"
             ></el-switch>
           </template>
         </el-table-column>
@@ -265,30 +265,34 @@ export default {
     this.fetchList()
   },
   methods: {
-    async loadTypeList() {
-      try {
-        const res = await getHouseTypeAll()
-        this.typeList = res.data || []
-      } catch (error) {
+    loadTypeList() {
+      const self = this
+      getHouseTypeAll().then(function(res) {
+        self.typeList = res.data || []
+      }).catch(function(error) {
         console.error('获取房屋类型列表失败:', error)
-      }
+      })
     },
-    async fetchList() {
+    fetchList() {
+      const self = this
       this.loading = true
-      try {
-        const params = {
-          ...this.searchForm,
-          pageNum: this.pagination.pageNum,
-          pageSize: this.pagination.pageSize
-        }
-        const res = await getHouseList(params)
-        this.tableData = res.data?.list || res.data?.records || res.data || []
-        this.pagination.total = res.data?.total || 0
-      } catch (error) {
-        console.error('获取房屋列表失败:', error)
-      } finally {
-        this.loading = false
+      const params = {
+        title: this.searchForm.title,
+        typeId: this.searchForm.typeId,
+        status: this.searchForm.status,
+        minPrice: this.searchForm.minPrice,
+        maxPrice: this.searchForm.maxPrice,
+        pageNum: this.pagination.pageNum,
+        pageSize: this.pagination.pageSize
       }
+      getHouseList(params).then(function(res) {
+        self.tableData = (res.data && res.data.records) || (res.data && res.data.list) || res.data || []
+        self.pagination.total = (res.data && res.data.total) || 0
+        self.loading = false
+      }).catch(function(error) {
+        console.error('获取房屋列表失败:', error)
+        self.loading = false
+      })
     },
     handleSearch() {
       this.pagination.pageNum = 1
@@ -331,81 +335,83 @@ export default {
       }
       this.imageList = []
       this.dialogVisible = true
-      this.$nextTick(() => {
-        this.$refs.houseForm && this.$refs.houseForm.clearValidate()
+      const self = this
+      this.$nextTick(function() {
+        if (self.$refs.houseForm) {
+          self.$refs.houseForm.clearValidate()
+        }
       })
     },
-    async handleEdit(row) {
+    handleEdit(row) {
+      const self = this
       this.isEdit = true
-      try {
-        const res = await getHouseById(row.id)
-        this.houseForm = { ...res.data }
-        if (res.data.images) {
+      getHouseById(row.id).then(function(res) {
+        self.houseForm = Object.assign({}, res.data)
+        if (res.data && res.data.images) {
           const images = res.data.images.split(',')
-          this.imageList = images.map((url, index) => ({
-            name: `图片${index + 1}`,
-            url: url
-          }))
+          self.imageList = images.map(function(url, index) {
+            return { name: '图片' + (index + 1), url: url }
+          })
         } else {
-          this.imageList = []
+          self.imageList = []
         }
-        this.dialogVisible = true
-        this.$nextTick(() => {
-          this.$refs.houseForm && this.$refs.houseForm.clearValidate()
-        })
-      } catch (error) {
-        this.houseForm = { ...row }
-        this.imageList = []
-        this.dialogVisible = true
-      }
-    },
-    async handleSubmit() {
-      try {
-        const valid = await this.$refs.houseForm.validate()
-        if (valid) {
-          this.submitLoading = true
-          if (this.isEdit) {
-            await updateHouse(this.houseForm)
-            this.$message.success('编辑成功')
-          } else {
-            await addHouse(this.houseForm)
-            this.$message.success('新增成功')
+        self.dialogVisible = true
+        self.$nextTick(function() {
+          if (self.$refs.houseForm) {
+            self.$refs.houseForm.clearValidate()
           }
-          this.dialogVisible = false
-          this.fetchList()
-        }
-      } catch (error) {
-        if (error !== false) {
-          console.error('提交失败:', error)
-        }
-      } finally {
-        this.submitLoading = false
-      }
-    },
-    async handleDelete(row) {
-      try {
-        await this.$confirm(`确定要删除房屋 "${row.title}" 吗?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
         })
-        await deleteHouse(row.id)
-        this.$message.success('删除成功')
-        this.fetchList()
-      } catch (e) {
+      }).catch(function(error) {
+        self.houseForm = Object.assign({}, row)
+        self.imageList = []
+        self.dialogVisible = true
+      })
+    },
+    handleSubmit() {
+      const self = this
+      this.$refs.houseForm.validate(function(valid) {
+        if (valid) {
+          self.submitLoading = true
+          const api = self.isEdit ? updateHouse : addHouse
+          api(self.houseForm).then(function() {
+            self.$message.success(self.isEdit ? '编辑成功' : '新增成功')
+            self.dialogVisible = false
+            self.fetchList()
+            self.submitLoading = false
+          }).catch(function(error) {
+            if (error !== false) {
+              console.error('提交失败:', error)
+            }
+            self.submitLoading = false
+          })
+        }
+      })
+    },
+    handleDelete(row) {
+      const self = this
+      this.$confirm('确定要删除房屋 "' + row.title + '" 吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function() {
+        return deleteHouse(row.id)
+      }).then(function() {
+        self.$message.success('删除成功')
+        self.fetchList()
+      }).catch(function(e) {
         if (e !== 'cancel') {
           console.error(e)
         }
-      }
+      })
     },
-    async handleStatusChange(row, val) {
-      try {
-        await updateHouseStatus(row.id)
-        this.$message.success(val === '1' ? '已上架' : '已下架')
-      } catch (error) {
+    handleStatusChange(row, val) {
+      const self = this
+      updateHouseStatus(row.id).then(function() {
+        self.$message.success(val === '1' ? '已上架' : '已下架')
+      }).catch(function(error) {
         row.status = row.status === '1' ? '0' : '1'
         console.error('状态切换失败:', error)
-      }
+      })
     },
     beforeUpload(file) {
       const isImage = file.type.startsWith('image/')
@@ -447,7 +453,9 @@ export default {
       }
     },
     handleDialogClose() {
-      this.$refs.houseForm && this.$refs.houseForm.resetFields()
+      if (this.$refs.houseForm) {
+        this.$refs.houseForm.resetFields()
+      }
       this.imageList = []
     }
   }
