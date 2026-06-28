@@ -53,26 +53,4 @@ public class House extends BaseEntity {
     @TableField(exist = false)
     private String typeName;
 
-    @TableField(exist = false)
-    private String layout;
-
-    @TableField(exist = false)
-    private BigDecimal rent;
-
-    public String getLayout() {
-        return this.rooms;
-    }
-
-    public void setLayout(String layout) {
-        this.rooms = layout;
-    }
-
-    public BigDecimal getRent() {
-        return this.rentPrice;
-    }
-
-    public void setRent(BigDecimal rent) {
-        this.rentPrice = rent;
-    }
-
 }

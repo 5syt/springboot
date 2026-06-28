@@ -48,10 +48,10 @@
         <el-table-column prop="title" label="标题" min-width="180" show-overflow-tooltip></el-table-column>
         <el-table-column prop="typeName" label="类型" width="120" align="center"></el-table-column>
         <el-table-column prop="area" label="面积(㎡)" width="100" align="center"></el-table-column>
-        <el-table-column prop="layout" label="户型" width="120" align="center"></el-table-column>
-        <el-table-column prop="rent" label="租金(元/月)" width="130" align="center">
+        <el-table-column prop="rooms" label="户型" width="120" align="center"></el-table-column>
+        <el-table-column prop="rentPrice" label="租金(元/月)" width="130" align="center">
           <template slot-scope="scope">
-            <span style="color: #F56C6C; font-weight: bold;">¥{{ scope.row.rent }}</span>
+            <span style="color: #F56C6C; font-weight: bold;">¥{{ scope.row.rentPrice }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="address" label="地址" min-width="200" show-overflow-tooltip></el-table-column>
@@ -117,15 +117,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="户型" prop="layout">
-              <el-input v-model="houseForm.layout" placeholder="如：3室2厅"></el-input>
+            <el-form-item label="户型" prop="rooms">
+              <el-input v-model="houseForm.rooms" placeholder="如：3室2厅"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="月租金" prop="rent">
-              <el-input v-model="houseForm.rent" placeholder="请输入月租金">
+            <el-form-item label="月租金" prop="rentPrice">
+              <el-input v-model="houseForm.rentPrice" placeholder="请输入月租金">
                 <template slot="prepend">¥</template>
                 <template slot="append">元/月</template>
               </el-input>
@@ -216,8 +216,8 @@ export default {
         title: '',
         typeId: '',
         area: '',
-        layout: '',
-        rent: '',
+        rooms: '',
+        rentPrice: '',
         floor: '',
         address: '',
         images: '',
@@ -235,10 +235,10 @@ export default {
         area: [
           { required: true, message: '请输入面积', trigger: 'blur' }
         ],
-        layout: [
+        rooms: [
           { required: true, message: '请输入户型', trigger: 'blur' }
         ],
-        rent: [
+        rentPrice: [
           { required: true, message: '请输入月租金', trigger: 'blur' }
         ],
         address: [
@@ -325,8 +325,8 @@ export default {
         title: '',
         typeId: '',
         area: '',
-        layout: '',
-        rent: '',
+        rooms: '',
+        rentPrice: '',
         floor: '',
         address: '',
         images: '',

@@ -26,8 +26,10 @@ public class LeaseOrder extends BaseEntity {
 
     private String tenantPhone;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal monthRent;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal deposit;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
@@ -36,6 +38,7 @@ public class LeaseOrder extends BaseEntity {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private LocalDate endDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal totalAmount;
 
     private Integer status;
@@ -44,16 +47,5 @@ public class LeaseOrder extends BaseEntity {
 
     @TableField(exist = false)
     private String houseTitle;
-
-    @TableField(exist = false)
-    private BigDecimal rent;
-
-    public BigDecimal getRent() {
-        return this.monthRent;
-    }
-
-    public void setRent(BigDecimal rent) {
-        this.monthRent = rent;
-    }
 
 }

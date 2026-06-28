@@ -48,9 +48,9 @@
         <el-table-column prop="orderNo" label="订单号" min-width="160"></el-table-column>
         <el-table-column prop="houseTitle" label="房屋" min-width="180" show-overflow-tooltip></el-table-column>
         <el-table-column prop="tenantName" label="租客" width="120"></el-table-column>
-        <el-table-column prop="rent" label="租金(元/月)" width="120" align="center">
+        <el-table-column prop="monthRent" label="租金(元/月)" width="120" align="center">
           <template slot-scope="scope">
-            <span style="color: #F56C6C;">¥{{ scope.row.rent }}</span>
+            <span style="color: #F56C6C;">¥{{ scope.row.monthRent }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="startDate" label="开始日期" width="120" align="center"></el-table-column>
@@ -118,8 +118,8 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="月租金" prop="rent">
-              <el-input v-model="orderForm.rent" placeholder="请输入月租金">
+            <el-form-item label="月租金" prop="monthRent">
+              <el-input v-model="orderForm.monthRent" placeholder="请输入月租金">
                 <template slot="prepend">¥</template>
               </el-input>
             </el-form-item>
@@ -212,7 +212,7 @@ export default {
         houseId: '',
         tenantName: '',
         tenantPhone: '',
-        rent: '',
+        monthRent: '',
         deposit: '',
         startDate: '',
         endDate: '',
@@ -233,7 +233,7 @@ export default {
           { required: true, message: '请输入联系电话', trigger: 'blur' },
           { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
         ],
-        rent: [
+        monthRent: [
           { required: true, message: '请输入月租金', trigger: 'blur' }
         ],
         startDate: [
@@ -337,7 +337,7 @@ export default {
         houseId: '',
         tenantName: '',
         tenantPhone: '',
-        rent: '',
+        monthRent: '',
         deposit: '',
         startDate: '',
         endDate: '',
