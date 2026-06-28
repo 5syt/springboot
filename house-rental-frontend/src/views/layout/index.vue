@@ -97,7 +97,7 @@ export default {
       return this.$route.path
     },
     menuRoutes() {
-      const routes = [...constantRoutes, ...asyncRoutes]
+      const routes = JSON.parse(JSON.stringify([...constantRoutes, ...asyncRoutes]))
       const userRoles = this.$store.getters.roles || []
       const hasRole = (route) => {
         if (!route.meta || !route.meta.roles) return true

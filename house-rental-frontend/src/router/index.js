@@ -26,7 +26,7 @@ export const constantRoutes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/index.vue'),
-        meta: { title: '首页', icon: 'el-icon-s-home', roles: ['ADMIN', 'USER'] }
+        meta: { title: '首页', icon: 'el-icon-s-home' }
       }
     ]
   },
@@ -130,7 +130,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Profile',
         component: () => import('@/views/profile/index.vue'),
-        meta: { title: '个人中心', icon: 'el-icon-user-solid', roles: ['ADMIN', 'USER'] }
+        meta: { title: '个人中心', icon: 'el-icon-user-solid' }
       }
     ]
   },
