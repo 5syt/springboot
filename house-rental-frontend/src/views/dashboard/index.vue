@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import echarts from 'echarts'
 import { getStatistics, getHouseTypeStatistics, getOrderTrendStatistics } from '@/api/statistics'
 
 export default {
@@ -159,11 +160,11 @@ export default {
     initCharts() {
       this.$nextTick(() => {
         if (this.$refs.pieChart) {
-          this.pieChart = this.$echarts.init(this.$refs.pieChart)
+          this.pieChart = echarts.init(this.$refs.pieChart)
           this.pieChart.setOption(this.pieOption)
         }
         if (this.$refs.lineChart) {
-          this.lineChart = this.$echarts.init(this.$refs.lineChart)
+          this.lineChart = echarts.init(this.$refs.lineChart)
           this.lineChart.setOption(this.lineOption)
         }
       })
