@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getUserList(params) {
   return request({
-    url: '/user/list',
+    url: '/system/user/page',
     method: 'get',
     params
   })
@@ -10,14 +10,14 @@ export function getUserList(params) {
 
 export function getUserById(id) {
   return request({
-    url: `/user/${id}`,
+    url: `/system/user/${id}`,
     method: 'get'
   })
 }
 
 export function addUser(data) {
   return request({
-    url: '/user',
+    url: '/system/user',
     method: 'post',
     data
   })
@@ -25,7 +25,7 @@ export function addUser(data) {
 
 export function updateUser(data) {
   return request({
-    url: '/user',
+    url: '/system/user',
     method: 'put',
     data
   })
@@ -33,21 +33,22 @@ export function updateUser(data) {
 
 export function deleteUser(id) {
   return request({
-    url: `/user/${id}`,
+    url: `/system/user/${id}`,
     method: 'delete'
   })
 }
 
-export function resetPassword(id) {
+export function resetPassword(id, password) {
   return request({
-    url: `/user/resetPassword/${id}`,
-    method: 'put'
+    url: '/system/user/resetPwd',
+    method: 'put',
+    data: { id, password }
   })
 }
 
 export function updateUserStatus(id, status) {
   return request({
-    url: `/user/status/${id}`,
+    url: `/system/user/status/${id}`,
     method: 'put',
     params: { status }
   })

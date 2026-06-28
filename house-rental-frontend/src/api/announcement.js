@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getAnnouncementList(params) {
   return request({
-    url: '/announcement/list',
+    url: '/announcement/page',
     method: 'get',
     params
   })
@@ -38,10 +38,9 @@ export function deleteAnnouncement(id) {
   })
 }
 
-export function updateAnnouncementStatus(id, status) {
+export function updateAnnouncementStatus(id) {
   return request({
-    url: `/announcement/status/${id}`,
-    method: 'put',
-    params: { status }
+    url: `/announcement/${id}/status`,
+    method: 'put'
   })
 }

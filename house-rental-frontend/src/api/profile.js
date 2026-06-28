@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function getProfile() {
   return request({
-    url: '/profile',
+    url: '/profile/info',
     method: 'get'
   })
 }
 
 export function updateProfile(data) {
   return request({
-    url: '/profile',
+    url: '/profile/update',
     method: 'put',
     data
   })
@@ -17,7 +17,7 @@ export function updateProfile(data) {
 
 export function updatePassword(data) {
   return request({
-    url: '/profile/password',
+    url: '/profile/updatePwd',
     method: 'put',
     data
   })

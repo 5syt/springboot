@@ -302,7 +302,7 @@ export default {
     },
     async handleStatusChange(row, val) {
       try {
-        await updateAnnouncementStatus(row.id, val)
+        await updateAnnouncementStatus(row.id)
         this.$message.success(val === '1' ? '已发布' : '已下架')
       } catch (error) {
         row.status = row.status === '1' ? '0' : '1'

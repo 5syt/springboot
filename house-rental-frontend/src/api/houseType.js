@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getHouseTypeList(params) {
   return request({
-    url: '/houseType/list',
+    url: '/house/type/page',
     method: 'get',
     params
   })
@@ -10,21 +10,21 @@ export function getHouseTypeList(params) {
 
 export function getHouseTypeAll() {
   return request({
-    url: '/houseType/all',
+    url: '/house/type/list',
     method: 'get'
   })
 }
 
 export function getHouseTypeById(id) {
   return request({
-    url: `/houseType/${id}`,
+    url: `/house/type/${id}`,
     method: 'get'
   })
 }
 
 export function addHouseType(data) {
   return request({
-    url: '/houseType',
+    url: '/house/type',
     method: 'post',
     data
   })
@@ -32,7 +32,7 @@ export function addHouseType(data) {
 
 export function updateHouseType(data) {
   return request({
-    url: '/houseType',
+    url: '/house/type',
     method: 'put',
     data
   })
@@ -40,7 +40,7 @@ export function updateHouseType(data) {
 
 export function deleteHouseType(id) {
   return request({
-    url: `/houseType/${id}`,
+    url: `/house/type/${id}`,
     method: 'delete'
   })
 }

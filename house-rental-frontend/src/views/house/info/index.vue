@@ -400,7 +400,7 @@ export default {
     },
     async handleStatusChange(row, val) {
       try {
-        await updateHouseStatus(row.id, val)
+        await updateHouseStatus(row.id)
         this.$message.success(val === '1' ? '已上架' : '已下架')
       } catch (error) {
         row.status = row.status === '1' ? '0' : '1'

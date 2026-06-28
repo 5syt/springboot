@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getHouseList(params) {
   return request({
-    url: '/house/list',
+    url: '/house/info/page',
     method: 'get',
     params
   })
@@ -10,14 +10,14 @@ export function getHouseList(params) {
 
 export function getHouseById(id) {
   return request({
-    url: `/house/${id}`,
+    url: `/house/info/${id}`,
     method: 'get'
   })
 }
 
 export function addHouse(data) {
   return request({
-    url: '/house',
+    url: '/house/info',
     method: 'post',
     data
   })
@@ -25,7 +25,7 @@ export function addHouse(data) {
 
 export function updateHouse(data) {
   return request({
-    url: '/house',
+    url: '/house/info',
     method: 'put',
     data
   })
@@ -33,16 +33,15 @@ export function updateHouse(data) {
 
 export function deleteHouse(id) {
   return request({
-    url: `/house/${id}`,
+    url: `/house/info/${id}`,
     method: 'delete'
   })
 }
 
-export function updateHouseStatus(id, status) {
+export function updateHouseStatus(id) {
   return request({
-    url: `/house/status/${id}`,
-    method: 'put',
-    params: { status }
+    url: `/house/info/${id}/status`,
+    method: 'put'
   })
 }
 
