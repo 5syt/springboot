@@ -19,16 +19,12 @@
     <el-row :gutter="20" style="margin-top: 20px;">
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <el-card title="房屋类型分布" shadow="hover">
-          <div v-loading="pieLoading" class="chart-container">
-            <v-chart :option="pieOption" autoresize style="height: 350px;" />
-          </div>
+          <div v-loading="pieLoading" class="chart-container" ref="pieChart"></div>
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <el-card title="月度订单趋势" shadow="hover">
-          <div v-loading="lineLoading" class="chart-container">
-            <v-chart :option="lineOption" autoresize style="height: 350px;" />
-          </div>
+          <div v-loading="lineLoading" class="chart-container" ref="lineChart"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -44,6 +40,8 @@ export default {
     return {
       pieLoading: false,
       lineLoading: false,
+      pieChart: null,
+      lineChart: null,
       statCards: [
         { label: '房屋总数', value: 0, icon: 'el-icon-office-building', color: '#409EFF' },
         { label: '在租房源', value: 0, icon: 'el-icon-house', color: '#67C23A' },
@@ -105,7 +103,7 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+          data: ['1月', '2月', '3月', '4月', '5月', '6月']
         },
         yAxis: {
           type: 'value'
@@ -142,11 +140,42 @@ export default {
     }
   },
   mounted() {
+    this.initCharts()
     this.loadStatistics()
     this.loadHouseTypeStatistics()
     this.loadOrderTrendStatistics()
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
+    if (this.pieChart) {
+      this.pieChart.dispose()
+    }
+    if (this.lineChart) {
+      this.lineChart.dispose()
+    }
   },
   methods: {
+    initCharts() {
+      this.$nextTick(() => {
+        if (this.$refs.pieChart) {
+          this.pieChart = this.$echarts.init(this.$refs.pieChart)
+          this.pieChart.setOption(this.pieOption)
+        }
+        if (this.$refs.lineChart) {
+          this.lineChart = this.$echarts.init(this.$refs.lineChart)
+          this.lineChart.setOption(this.lineOption)
+        }
+      })
+    },
+    handleResize() {
+      if (this.pieChart) {
+        this.pieChart.resize()
+      }
+      if (this.lineChart) {
+        this.lineChart.resize()
+      }
+    },
     async loadStatistics() {
       try {
         const res = await getStatistics()
@@ -164,10 +193,10 @@ export default {
       try {
         const res = await getHouseTypeStatistics()
         const data = res.data || []
-        this.pieOption.series[0].data = data.map(item => ({
-          name: item.name,
-          value: item.value
-        }))
+        this.pieOption.series[0].data = data
+        if (this.pieChart) {
+          this.pieChart.setOption(this.pieOption)
+        }
       } catch (error) {
         console.error('获取房屋类型统计失败:', error)
       } finally {
@@ -184,6 +213,9 @@ export default {
         this.lineOption.series[0].data = counts
         if (months.length > 0) {
           this.lineOption.xAxis.data = months
+        }
+        if (this.lineChart) {
+          this.lineChart.setOption(this.lineOption)
         }
       } catch (error) {
         console.error('获取订单趋势统计失败:', error)
@@ -245,5 +277,6 @@ export default {
 
 .chart-container {
   width: 100%;
+  height: 350px;
 }
 </style>
