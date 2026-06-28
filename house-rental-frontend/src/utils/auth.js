@@ -1,6 +1,7 @@
 const TokenKey = 'hr_token'
 const UserInfoKey = 'hr_user_info'
 const MenuKey = 'hr_menu'
+const RolesKey = 'hr_roles'
 
 export function getToken() {
   return localStorage.getItem(TokenKey) || ''
@@ -40,8 +41,22 @@ export function removeMenu() {
   return localStorage.removeItem(MenuKey)
 }
 
+export function getRoles() {
+  const roles = localStorage.getItem(RolesKey)
+  return roles ? JSON.parse(roles) : []
+}
+
+export function setRoles(roles) {
+  return localStorage.setItem(RolesKey, JSON.stringify(roles))
+}
+
+export function removeRoles() {
+  return localStorage.removeItem(RolesKey)
+}
+
 export function clearAuth() {
   removeToken()
   removeUserInfo()
   removeMenu()
+  removeRoles()
 }

@@ -1,10 +1,11 @@
 import { login as loginApi, getUserInfo as getUserInfoApi, logout as logoutApi, getMenu as getMenuApi } from '@/api/auth'
-import { setToken, getToken, removeToken, setUserInfo, getUserInfo, removeUserInfo, setMenu, getMenu, removeMenu, clearAuth } from '@/utils/auth'
+import { setToken, getToken, removeToken, setUserInfo, getUserInfo, removeUserInfo, setMenu, getMenu, removeMenu, clearAuth, setRoles, getRoles, removeRoles } from '@/utils/auth'
 
 const state = {
   token: getToken(),
   userInfo: getUserInfo(),
-  menu: getMenu()
+  menu: getMenu(),
+  roles: getRoles()
 }
 
 const mutations = {
@@ -20,10 +21,15 @@ const mutations = {
     state.menu = menu
     setMenu(menu)
   },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
+    setRoles(roles)
+  },
   CLEAR_AUTH: (state) => {
     state.token = ''
     state.userInfo = {}
     state.menu = []
+    state.roles = []
     clearAuth()
   }
 }
@@ -32,9 +38,10 @@ const actions = {
   login({ commit }, loginForm) {
     return new Promise((resolve, reject) => {
       loginApi(loginForm).then(res => {
-        const { token, userInfo } = res.data
+        const { token, userInfo, roles } = res.data
         commit('SET_TOKEN', token)
         commit('SET_USER_INFO', userInfo)
+        commit('SET_ROLES', roles || [])
         resolve(res)
       }).catch(error => {
         reject(error)
@@ -44,7 +51,9 @@ const actions = {
   getUserInfo({ commit }) {
     return new Promise((resolve, reject) => {
       getUserInfoApi().then(res => {
-        commit('SET_USER_INFO', res.data)
+        const { userInfo, roles } = res.data
+        commit('SET_USER_INFO', userInfo)
+        commit('SET_ROLES', roles || [])
         resolve(res)
       }).catch(error => {
         reject(error)

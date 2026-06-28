@@ -4,6 +4,11 @@ import { getToken } from '@/utils/auth'
 
 const whiteList = ['/login', '/404']
 
+function hasPermission(route, roles) {
+  if (!route.meta || !route.meta.roles) return true
+  return route.meta.roles.some(role => roles.includes(role))
+}
+
 router.beforeEach(async(to, from, next) => {
   const hasToken = getToken()
 
@@ -13,11 +18,21 @@ router.beforeEach(async(to, from, next) => {
     } else {
       const hasUserInfo = store.getters.userInfo && store.getters.userInfo.id
       if (hasUserInfo) {
-        next()
+        const roles = store.getters.roles || []
+        if (hasPermission(to, roles)) {
+          next()
+        } else {
+          next('/404')
+        }
       } else {
         try {
           await store.dispatch('user/getUserInfo')
-          next()
+          const roles = store.getters.roles || []
+          if (hasPermission(to, roles)) {
+            next()
+          } else {
+            next('/404')
+          }
         } catch (error) {
           console.error('获取用户信息失败:', error)
           await store.dispatch('user/resetToken')

@@ -26,7 +26,7 @@ export const constantRoutes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/index.vue'),
-        meta: { title: '首页', icon: 'el-icon-s-home' }
+        meta: { title: '首页', icon: 'el-icon-s-home', roles: ['ADMIN', 'USER'] }
       }
     ]
   },
@@ -34,13 +34,13 @@ export const constantRoutes = [
     path: '/system',
     component: Layout,
     redirect: '/system/user',
-    meta: { title: '系统管理', icon: 'el-icon-s-tools' },
+    meta: { title: '系统管理', icon: 'el-icon-s-tools', roles: ['ADMIN'] },
     children: [
       {
         path: 'user',
         name: 'User',
         component: () => import('@/views/system/user/index.vue'),
-        meta: { title: '用户管理', icon: 'el-icon-user' }
+        meta: { title: '用户管理', icon: 'el-icon-user', roles: ['ADMIN'] }
       }
     ]
   },
@@ -48,19 +48,19 @@ export const constantRoutes = [
     path: '/house',
     component: Layout,
     redirect: '/house/type',
-    meta: { title: '房屋管理', icon: 'el-icon-office-building' },
+    meta: { title: '房屋管理', icon: 'el-icon-office-building', roles: ['ADMIN'] },
     children: [
       {
         path: 'type',
         name: 'HouseType',
         component: () => import('@/views/house/type/index.vue'),
-        meta: { title: '房屋类型', icon: 'el-icon-menu' }
+        meta: { title: '房屋类型', icon: 'el-icon-menu', roles: ['ADMIN'] }
       },
       {
         path: 'info',
         name: 'HouseInfo',
         component: () => import('@/views/house/info/index.vue'),
-        meta: { title: '房屋信息', icon: 'el-icon-house' }
+        meta: { title: '房屋信息', icon: 'el-icon-house', roles: ['ADMIN'] }
       }
     ]
   },
@@ -68,13 +68,13 @@ export const constantRoutes = [
     path: '/order',
     component: Layout,
     redirect: '/order/lease',
-    meta: { title: '订单管理', icon: 'el-icon-document' },
+    meta: { title: '订单管理', icon: 'el-icon-document', roles: ['ADMIN'] },
     children: [
       {
         path: 'lease',
         name: 'LeaseOrder',
         component: () => import('@/views/order/lease/index.vue'),
-        meta: { title: '租赁订单', icon: 'el-icon-s-order' }
+        meta: { title: '租赁订单', icon: 'el-icon-s-order', roles: ['ADMIN'] }
       }
     ]
   },
@@ -82,13 +82,41 @@ export const constantRoutes = [
     path: '/announcement',
     component: Layout,
     redirect: '/announcement/list',
-    meta: { title: '公告管理', icon: 'el-icon-bell' },
+    meta: { title: '公告管理', icon: 'el-icon-bell', roles: ['ADMIN'] },
     children: [
       {
         path: 'list',
         name: 'AnnouncementList',
         component: () => import('@/views/announcement/list/index.vue'),
-        meta: { title: '公告列表', icon: 'el-icon-message' }
+        meta: { title: '公告列表', icon: 'el-icon-message', roles: ['ADMIN'] }
+      }
+    ]
+  },
+  {
+    path: '/house-view',
+    component: Layout,
+    redirect: '/house-view/list',
+    meta: { title: '房屋浏览', icon: 'el-icon-house', roles: ['USER'] },
+    children: [
+      {
+        path: 'list',
+        name: 'HouseViewList',
+        component: () => import('@/views/house/info/index.vue'),
+        meta: { title: '房屋列表', icon: 'el-icon-house', roles: ['USER'] }
+      }
+    ]
+  },
+  {
+    path: '/my-order',
+    component: Layout,
+    redirect: '/my-order/list',
+    meta: { title: '我的订单', icon: 'el-icon-s-order', roles: ['USER'] },
+    children: [
+      {
+        path: 'list',
+        name: 'MyOrderList',
+        component: () => import('@/views/order/lease/index.vue'),
+        meta: { title: '我的订单', icon: 'el-icon-s-order', roles: ['USER'] }
       }
     ]
   },
@@ -102,7 +130,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Profile',
         component: () => import('@/views/profile/index.vue'),
-        meta: { title: '个人中心', icon: 'el-icon-user-solid' }
+        meta: { title: '个人中心', icon: 'el-icon-user-solid', roles: ['ADMIN', 'USER'] }
       }
     ]
   },

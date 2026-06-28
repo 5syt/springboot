@@ -54,10 +54,22 @@ public class AuthController {
         SysUser sysUser = loginUser.getSysUser();
         String token = jwtUtils.generateToken(sysUser.getId(), sysUser.getUsername());
 
+        List<Long> roleIds = sysUserRoleMapper.selectList(
+                new LambdaQueryWrapper<SysUserRole>()
+                        .eq(SysUserRole::getUserId, sysUser.getId())
+        ).stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+
+        List<String> roleCodes = new java.util.ArrayList<>();
+        if (!roleIds.isEmpty()) {
+            List<SysRole> roles = sysRoleMapper.selectBatchIds(roleIds);
+            roleCodes = roles.stream().map(SysRole::getCode).collect(Collectors.toList());
+        }
+
         Map<String, Object> data = new HashMap<>();
         data.put("token", token);
         sysUser.setPassword(null);
         data.put("userInfo", sysUser);
+        data.put("roles", roleCodes);
 
         return Result.success(data);
     }
@@ -69,11 +81,27 @@ public class AuthController {
     }
 
     @GetMapping("/userInfo")
-    public Result<SysUser> getUserInfo() {
+    public Result<Map<String, Object>> getUserInfo() {
         LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SysUser sysUser = loginUser.getSysUser();
         sysUser.setPassword(null);
-        return Result.success(sysUser);
+
+        List<Long> roleIds = sysUserRoleMapper.selectList(
+                new LambdaQueryWrapper<SysUserRole>()
+                        .eq(SysUserRole::getUserId, sysUser.getId())
+        ).stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+
+        List<String> roleCodes = new java.util.ArrayList<>();
+        if (!roleIds.isEmpty()) {
+            List<SysRole> roles = sysRoleMapper.selectBatchIds(roleIds);
+            roleCodes = roles.stream().map(SysRole::getCode).collect(Collectors.toList());
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("userInfo", sysUser);
+        data.put("roles", roleCodes);
+
+        return Result.success(data);
     }
 
     @GetMapping("/menu")

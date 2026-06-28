@@ -98,10 +98,16 @@ export default {
     },
     menuRoutes() {
       const routes = [...constantRoutes, ...asyncRoutes]
+      const userRoles = this.$store.getters.roles || []
+      const hasRole = (route) => {
+        if (!route.meta || !route.meta.roles) return true
+        return route.meta.roles.some(role => userRoles.includes(role))
+      }
       return routes.filter(route => {
         if (route.hidden) return false
+        if (!hasRole(route)) return false
         if (route.children) {
-          route.children = route.children.filter(child => !child.hidden)
+          route.children = route.children.filter(child => !child.hidden && hasRole(child))
         }
         return route.component && route.children && route.children.length > 0 && route.path !== '/' && route.path !== '/login' && route.path !== '/404'
       }).map(route => {
