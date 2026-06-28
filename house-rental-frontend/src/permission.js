@@ -1,7 +1,6 @@
 import router from './router'
 import store from './store'
 import { getToken } from '@/utils/auth'
-import { asyncRoutes, resetRouter } from '@/router'
 
 const whiteList = ['/login', '/404']
 
@@ -12,18 +11,15 @@ router.beforeEach(async(to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
-      const hasMenu = store.getters.menu && store.getters.menu.length > 0
-      if (hasMenu) {
+      const hasUserInfo = store.getters.userInfo && store.getters.userInfo.id
+      if (hasUserInfo) {
         next()
       } else {
         try {
-          await store.dispatch('user/getMenu')
-          resetRouter()
-          router.addRoutes(asyncRoutes)
-          router.addRoutes([{ path: '*', redirect: '/404', hidden: true }])
-          next({ ...to, replace: true })
+          await store.dispatch('user/getUserInfo')
+          next()
         } catch (error) {
-          console.error('获取菜单失败:', error)
+          console.error('获取用户信息失败:', error)
           await store.dispatch('user/resetToken')
           next(`/login?redirect=${to.path}`)
         }

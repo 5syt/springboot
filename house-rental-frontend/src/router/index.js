@@ -29,10 +29,7 @@ export const constantRoutes = [
         meta: { title: '首页', icon: 'el-icon-s-home' }
       }
     ]
-  }
-]
-
-export const asyncRoutes = [
+  },
   {
     path: '/system',
     component: Layout,
@@ -108,8 +105,15 @@ export const asyncRoutes = [
         meta: { title: '个人中心', icon: 'el-icon-user-solid' }
       }
     ]
+  },
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
   }
 ]
+
+export const asyncRoutes = []
 
 const createRouter = () => new VueRouter({
   mode: 'history',
