@@ -312,6 +312,16 @@ export default {
       this.pagination.pageNum = val
       this.fetchList()
     },
+    getImgUrl(url) {
+      if (!url) return ''
+      if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
+        return url
+      }
+      if (url.startsWith('/files/')) {
+        return 'http://localhost:8088' + url
+      }
+      return url
+    },
     getDefaultImg(width, height, text) {
       const w = width || 500
       const h = height || 350
@@ -341,7 +351,8 @@ export default {
       } catch (e) {
         list = images.split(',').filter(function(img) { return img && img.trim() })
       }
-      return (list && list.length > 0 && list[0]) ? list[0] : defaultImg
+      const first = (list && list.length > 0 && list[0]) ? list[0] : defaultImg
+      return this.getImgUrl(first)
     },
     getImageList(images) {
       const defaultImgs = [this.getDefaultImg(800, 500, '房屋图片')]
@@ -358,7 +369,9 @@ export default {
       } catch (e) {
         list = images.split(',').filter(function(img) { return img && img.trim() })
       }
-      return (list && list.length > 0) ? list : defaultImgs
+      const result = (list && list.length > 0) ? list : defaultImgs
+      const self = this
+      return result.map(function(img) { return self.getImgUrl(img) })
     },
     handleImgError(event) {
       if (event.target.dataset.errorHandled) {
