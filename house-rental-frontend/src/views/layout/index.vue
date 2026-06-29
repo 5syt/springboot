@@ -9,7 +9,7 @@
         :default-active="activeMenu"
         :collapse="isCollapse"
         :collapse-transition="false"
-        router
+        :router="true"
         background-color="#304156"
         text-color="#bfcbd9"
         active-text-color="#409EFF"
@@ -17,7 +17,7 @@
       >
         <template v-for="route in menuRoutes">
           <template v-if="route.children && route.children.length > 0">
-            <el-submenu :index="resolvePath(route.path)" :key="route.path">
+            <el-submenu :index="'/' + route.path" :key="route.path">
               <template slot="title">
                 <i :class="(route.meta && route.meta.icon) || 'el-icon-menu'"></i>
                 <span slot="title">{{ route.meta && route.meta.title }}</span>
@@ -25,7 +25,7 @@
               <el-menu-item
                 v-for="child in route.children"
                 :key="child.path"
-                :index="resolvePath(route.path + '/' + child.path)"
+                :index="'/' + route.path + '/' + child.path"
               >
                 <i :class="(child.meta && child.meta.icon) || 'el-icon-document'"></i>
                 <span slot="title">{{ child.meta && child.meta.title }}</span>
@@ -33,7 +33,7 @@
             </el-submenu>
           </template>
           <template v-else>
-            <el-menu-item :index="resolvePath(route.path)" :key="route.path">
+            <el-menu-item :index="'/' + route.path" :key="route.path">
               <i :class="(route.meta && route.meta.icon) || 'el-icon-menu'"></i>
               <span slot="title">{{ route.meta && route.meta.title }}</span>
             </el-menu-item>
@@ -109,7 +109,8 @@ export default {
         if (route.children) {
           route.children = route.children.filter(child => !child.hidden && hasRole(child))
         }
-        return route.component && route.children && route.children.length > 0 && route.path !== '/' && route.path !== '/login' && route.path !== '/404'
+        if (route.path === '/' || route.path === '/login' || route.path === '/404') return false
+        return route.component && route.children && route.children.length > 0
       }).map(route => {
         if (route.path === '/') {
           return route.children[0]
