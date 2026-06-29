@@ -312,8 +312,22 @@ export default {
       this.pagination.pageNum = val
       this.fetchList()
     },
+    getDefaultImg(width, height, text) {
+      const w = width || 500
+      const h = height || 350
+      const label = text || '房屋图片'
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+        <rect fill="#f0f2f5" width="${w}" height="${h}"/>
+        <g fill="#c0c4cc">
+          <path d="M${w/2} ${h/2-50} m-40 0 a 40 40 0 1 1 80 0 a 40 40 0 1 1 -80 0" opacity="0.5"/>
+          <path d="M${w/2-80} ${h/2+20} q 80 -60 160 0 l 0 80 l -160 0 z" opacity="0.5"/>
+        </g>
+        <text x="${w/2}" y="${h-30}" text-anchor="middle" fill="#909399" font-size="16" font-family="sans-serif">${label}</text>
+      </svg>`
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg)
+    },
     getFirstImage(images) {
-      const defaultImg = 'https://img1.baidu.com/it/u=1987654321,1234567890&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=350'
+      const defaultImg = this.getDefaultImg(500, 350, '房屋图片')
       if (!images || images === '[]' || images === '') {
         return defaultImg
       }
@@ -330,9 +344,7 @@ export default {
       return (list && list.length > 0 && list[0]) ? list[0] : defaultImg
     },
     getImageList(images) {
-      const defaultImgs = [
-        'https://img1.baidu.com/it/u=1987654321,1234567890&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500'
-      ]
+      const defaultImgs = [this.getDefaultImg(800, 500, '房屋图片')]
       if (!images || images === '[]' || images === '') {
         return defaultImgs
       }
@@ -349,7 +361,11 @@ export default {
       return (list && list.length > 0) ? list : defaultImgs
     },
     handleImgError(event) {
-      event.target.src = 'https://img1.baidu.com/it/u=1987654321,1234567890&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=350'
+      if (event.target.dataset.errorHandled) {
+        return
+      }
+      event.target.dataset.errorHandled = 'true'
+      event.target.src = this.getDefaultImg(500, 350, '加载失败')
     },
     handleViewDetail(item) {
       const self = this
