@@ -41,7 +41,7 @@
           @click="handleViewDetail(item)"
         >
           <div class="house-image">
-            <img :src="getFirstImage(item.images)" :alt="item.title" />
+            <img :src="getFirstImage(item.images)" :alt="item.title" @error="handleImgError" />
             <div class="house-price-tag">
               <span class="price-symbol">¥</span>
               <span class="price-num">{{ item.rentPrice }}</span>
@@ -103,7 +103,7 @@
         <div class="detail-images">
           <el-carousel :interval="3000" height="300px">
             <el-carousel-item v-for="(img, index) in getImageList(currentHouse.images)" :key="index">
-              <img :src="img" :alt="currentHouse.title" class="detail-img" />
+              <img :src="img" :alt="currentHouse.title" class="detail-img" @error="handleImgError" />
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -313,17 +313,43 @@ export default {
       this.fetchList()
     },
     getFirstImage(images) {
-      if (!images) {
-        return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20apartment%20exterior%20building%20house&image_size=square'
+      const defaultImg = 'https://img1.baidu.com/it/u=1987654321,1234567890&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=350'
+      if (!images || images === '[]' || images === '') {
+        return defaultImg
       }
-      const list = images.split(',')
-      return list[0] || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20apartment%20exterior%20building%20house&image_size=square'
+      let list = []
+      try {
+        if (images.startsWith('[') && images.endsWith(']')) {
+          list = JSON.parse(images)
+        } else {
+          list = images.split(',').filter(function(img) { return img && img.trim() })
+        }
+      } catch (e) {
+        list = images.split(',').filter(function(img) { return img && img.trim() })
+      }
+      return (list && list.length > 0 && list[0]) ? list[0] : defaultImg
     },
     getImageList(images) {
-      if (!images) {
-        return ['https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20apartment%20interior%20living%20room&image_size=landscape_16_9']
+      const defaultImgs = [
+        'https://img1.baidu.com/it/u=1987654321,1234567890&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500'
+      ]
+      if (!images || images === '[]' || images === '') {
+        return defaultImgs
       }
-      return images.split(',').filter(function(img) { return img })
+      let list = []
+      try {
+        if (images.startsWith('[') && images.endsWith(']')) {
+          list = JSON.parse(images)
+        } else {
+          list = images.split(',').filter(function(img) { return img && img.trim() })
+        }
+      } catch (e) {
+        list = images.split(',').filter(function(img) { return img && img.trim() })
+      }
+      return (list && list.length > 0) ? list : defaultImgs
+    },
+    handleImgError(event) {
+      event.target.src = 'https://img1.baidu.com/it/u=1987654321,1234567890&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=350'
     },
     handleViewDetail(item) {
       const self = this
